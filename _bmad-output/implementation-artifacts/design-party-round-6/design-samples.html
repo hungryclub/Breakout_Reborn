@@ -1,0 +1,290 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Breakout Reborn - Design Party Round 6</title>
+  <style>
+    :root {
+      --bg: #070b12;
+      --panel: #0f1624;
+      --ink: #eff5ff;
+      --muted: #8a96ab;
+      --line: rgba(255,255,255,0.08);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: linear-gradient(180deg, #060911 0%, #0b1020 100%);
+      color: var(--ink);
+      font-family: "Segoe UI", "Noto Sans KR", sans-serif;
+    }
+    .page {
+      width: 1600px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+    .intro {
+      display: flex;
+      justify-content: space-between;
+      gap: 24px;
+      padding: 18px 22px;
+      background: rgba(8,12,20,0.88);
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      margin-bottom: 20px;
+    }
+    .eyebrow { color: #82d4ff; font-size: 12px; letter-spacing: .18em; text-transform: uppercase; }
+    .intro h1 { margin: 8px 0 10px; font-size: 34px; }
+    .intro p { margin: 0; color: #bbc8dc; max-width: 930px; line-height: 1.6; }
+    .stack { display: grid; gap: 18px; }
+    .sample {
+      position: relative;
+      min-height: 500px;
+      overflow: hidden;
+      border-radius: 28px;
+      border: 1px solid rgba(255,255,255,0.1);
+      background: #0a0f18;
+      padding: 28px;
+    }
+    .sample h2 { margin: 6px 0 0; font-size: 38px; line-height: 1.02; }
+    .sample .subtitle { color: #d7e0f3; margin-top: 8px; font-size: 16px; max-width: 520px; line-height: 1.6; }
+    .badges { display: flex; gap: 10px; flex-wrap: wrap; margin: 18px 0 0; }
+    .badge {
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      background: rgba(255,255,255,0.08);
+      color: #e8eefc;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    .status {
+      position: absolute;
+      right: 28px;
+      top: 26px;
+      padding: 10px 14px;
+      border-radius: 16px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .08em;
+    }
+    .caption {
+      position: absolute;
+      left: 28px;
+      bottom: 24px;
+      max-width: 440px;
+      color: #eff4ff;
+      font-size: 20px;
+      font-weight: 600;
+      line-height: 1.35;
+    }
+    .mini {
+      position: absolute;
+      left: 28px;
+      bottom: 110px;
+      display: flex;
+      gap: 10px;
+      color: #d0d8eb;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+    }
+    .mini span {
+      padding: 8px 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+    .paddle {
+      position: absolute;
+      height: 16px;
+      border-radius: 999px;
+      box-shadow: 0 0 20px currentColor;
+    }
+    .ball {
+      position: absolute;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      box-shadow: 0 0 18px currentColor;
+    }
+    .brick {
+      position: absolute;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+    .sample-1 {
+      background:
+        radial-gradient(circle at 72% 48%, rgba(255,160,110,0.24), transparent 16%),
+        linear-gradient(180deg, #130e0d 0%, #1b120e 48%, #0d0908 100%);
+    }
+    .sample-2 {
+      background:
+        radial-gradient(circle at 50% 50%, rgba(255,82,82,0.18), transparent 18%),
+        linear-gradient(180deg, #141018 0%, #180f15 45%, #09060a 100%);
+    }
+    .sample-3 {
+      background:
+        radial-gradient(circle at 50% 18%, rgba(255,214,110,0.18), transparent 18%),
+        linear-gradient(180deg, #120b1c 0%, #1b1030 45%, #090612 100%);
+    }
+    svg.scene {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <section class="intro">
+      <div>
+        <div class="eyebrow">Breakout Reborn / Design Party Round 6</div>
+        <h1>선택된 3안만 더 공격적으로 정제한 사건 중심 시안</h1>
+        <p>이번 라운드는 3번, 4번, 5번만 남겨서 각각을 공성전, 봉쇄 직전 침입, 일식 마감 전 점화라는 직접적인 사건으로 재구성했다. 목표와 위협은 설명이 아니라 장면 안에서 바로 읽히도록 만들었다.</p>
+      </div>
+      <div style="min-width:280px;color:#d5ddef;font-size:13px;line-height:1.7">
+        <div class="eyebrow" style="margin-bottom:8px">Refinement Rules</div>
+        <div>1. 목적이 첫 1초에 읽힐 것</div>
+        <div>2. 위협이 화면 안에서 보일 것</div>
+        <div>3. 한 타격이 세계 변화를 만들 것</div>
+        <div>4. 각 시안이 다른 레이아웃 문법을 가질 것</div>
+      </div>
+    </section>
+
+    <div class="stack">
+      <section class="sample sample-1">
+        <div class="status" style="background:rgba(255,118,67,.14);color:#ffb080;border:1px solid rgba(255,160,110,.32)">LOCKDOWN 00:18</div>
+        <div class="eyebrow" style="color:#ffb080">01 Selected Concept 3</div>
+        <h2>Heart Gate Siege</h2>
+        <div class="subtitle">성채의 심장문이 완전 봉쇄되기 전에 장갑층을 벗겨내고 코어실을 연다. 지금은 상징을 보는 장면이 아니라, 마지막 장갑 한 겹을 뜯어내는 공성전의 순간이어야 한다.</div>
+        <div class="badges">
+          <div class="badge">Goal: Open the core chamber</div>
+          <div class="badge">Threat: Auto turrets are still live</div>
+          <div class="badge">Hit Meaning: Armor plate falls away</div>
+        </div>
+        <div class="mini"><span>Siege Rail</span><span>Heart Gate</span><span>Turret Pressure</span></div>
+        <div class="caption">One more breach and the war fortress opens its heart.</div>
+        <div class="paddle" style="left:470px;bottom:70px;width:180px;color:#ffb86a;background:linear-gradient(90deg,#ff7d45,#ffd28e)"></div>
+        <div class="ball" style="left:620px;bottom:115px;color:#ffe4a8;background:#fff2ca"></div>
+        <div class="brick" style="left:775px;top:170px;width:160px;height:34px;background:#5c2f1f"></div>
+        <div class="brick" style="left:945px;top:152px;width:150px;height:34px;background:#74402a"></div>
+        <div class="brick" style="left:1110px;top:170px;width:150px;height:34px;background:#8d4b31"></div>
+        <div class="brick" style="left:860px;top:214px;width:125px;height:30px;background:#8a704e"></div>
+        <div class="brick" style="left:1010px;top:214px;width:130px;height:30px;background:#9d7e58"></div>
+        <svg class="scene" viewBox="0 0 1600 500" aria-hidden="true">
+          <defs>
+            <linearGradient id="corridor" x1="0" x2="1">
+              <stop offset="0%" stop-color="#2b1711" />
+              <stop offset="100%" stop-color="#0c0908" />
+            </linearGradient>
+            <linearGradient id="gateGlow" x1="0" x2="0" y1="0" y2="1">
+              <stop offset="0%" stop-color="#fff2ce" />
+              <stop offset="100%" stop-color="#ff8e57" />
+            </linearGradient>
+          </defs>
+          <polygon points="390,460 880,460 1415,120 970,120" fill="url(#corridor)" opacity=".88"/>
+          <polygon points="430,460 780,460 1180,170 885,170" fill="#1c120f" opacity=".9"/>
+          <rect x="1120" y="95" width="240" height="300" rx="24" fill="#2a1610" stroke="#93563a" stroke-width="6"/>
+          <rect x="1172" y="142" width="136" height="206" rx="18" fill="#150d0b" stroke="#5a2e1d" stroke-width="5"/>
+          <rect x="1202" y="170" width="76" height="150" rx="16" fill="#29140f" stroke="#7a3c24" stroke-width="4"/>
+          <path d="M1240 182 L1240 308" stroke="url(#gateGlow)" stroke-width="16" stroke-linecap="round"/>
+          <circle cx="1240" cy="250" r="32" fill="none" stroke="#ffb16e" stroke-width="8"/>
+          <circle cx="1240" cy="250" r="14" fill="#fff0cf"/>
+          <rect x="1005" y="122" width="36" height="150" rx="12" fill="#3f2419"/>
+          <rect x="1390" y="122" width="36" height="150" rx="12" fill="#3f2419"/>
+          <circle cx="1023" cy="150" r="14" fill="#ff6f48"/>
+          <circle cx="1408" cy="150" r="14" fill="#ff6f48"/>
+          <circle cx="1023" cy="212" r="10" fill="#ffb077"/>
+          <circle cx="1408" cy="212" r="10" fill="#ffb077"/>
+          <path d="M618 395 L930 240" stroke="#ffae73" stroke-width="4" stroke-dasharray="14 10" opacity=".7"/>
+        </svg>
+      </section>
+
+      <section class="sample sample-2">
+        <div class="status" style="background:rgba(255,84,111,.14);color:#ff93a7;border:1px solid rgba(255,110,140,.32)">ERASE 82%</div>
+        <div class="eyebrow" style="color:#ff93a7">02 Selected Concept 4</div>
+        <h2>Lockdown Heist</h2>
+        <div class="subtitle">금고가 자동 봉인되고 기록핵이 삭제되기 전에 셔터를 깨고 코어를 탈취한다. 이번 장면은 예쁜 원형 퍼즐이 아니라, 봉쇄 직전의 침입 현장이어야 한다.</div>
+        <div class="badges">
+          <div class="badge">Goal: Steal the archive core</div>
+          <div class="badge">Threat: Erase protocol is closing in</div>
+          <div class="badge">Hit Meaning: Lock cells overload</div>
+        </div>
+        <div class="mini"><span>Closing Shutters</span><span>Laser Sweep</span><span>Archive Core</span></div>
+        <div class="caption">If the ring seals, the core is gone forever.</div>
+        <div class="paddle" style="left:700px;bottom:66px;width:200px;color:#ff7f97;background:linear-gradient(90deg,#ff4f70,#ffb4be)"></div>
+        <div class="ball" style="left:790px;bottom:112px;color:#ffd1da;background:#fff1f6"></div>
+        <div class="brick" style="left:615px;top:135px;width:120px;height:28px;background:#6d2a36"></div>
+        <div class="brick" style="left:745px;top:110px;width:110px;height:28px;background:#8f3442"></div>
+        <div class="brick" style="left:865px;top:135px;width:120px;height:28px;background:#ab4050"></div>
+        <div class="brick" style="left:680px;top:182px;width:105px;height:26px;background:#8d5a66"></div>
+        <div class="brick" style="left:818px;top:182px;width:105px;height:26px;background:#8d5a66"></div>
+        <svg class="scene" viewBox="0 0 1600 500" aria-hidden="true">
+          <defs>
+            <radialGradient id="vaultCore" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#fff5fd"/>
+              <stop offset="100%" stop-color="#ff7e93"/>
+            </radialGradient>
+          </defs>
+          <circle cx="800" cy="255" r="136" fill="none" stroke="#59212f" stroke-width="34"/>
+          <circle cx="800" cy="255" r="96" fill="none" stroke="#7c2d3d" stroke-width="20"/>
+          <circle cx="800" cy="255" r="60" fill="none" stroke="#b54b62" stroke-width="12"/>
+          <rect x="764" y="198" width="72" height="114" rx="26" fill="url(#vaultCore)" stroke="#ffd4df" stroke-width="6"/>
+          <path d="M556 150 L692 215" stroke="#ff6684" stroke-width="24" stroke-linecap="round"/>
+          <path d="M1044 150 L908 215" stroke="#ff6684" stroke-width="24" stroke-linecap="round"/>
+          <path d="M548 340 L690 285" stroke="#ff8ea0" stroke-width="16" stroke-linecap="round"/>
+          <path d="M1052 340 L910 285" stroke="#ff8ea0" stroke-width="16" stroke-linecap="round"/>
+          <path d="M460 390 C610 350, 980 350, 1140 390" stroke="#ff526f" stroke-width="4" fill="none" opacity=".9"/>
+          <path d="M440 400 C590 360, 1000 360, 1160 400" stroke="#ffb1bf" stroke-width="2" fill="none" opacity=".65"/>
+          <rect x="540" y="120" width="20" height="280" rx="10" fill="#2b151a"/>
+          <rect x="1040" y="120" width="20" height="280" rx="10" fill="#2b151a"/>
+          <circle cx="550" cy="115" r="13" fill="#ff556f"/>
+          <circle cx="1050" cy="115" r="13" fill="#ff556f"/>
+        </svg>
+      </section>
+
+      <section class="sample sample-3">
+        <div class="status" style="background:rgba(255,214,110,.14);color:#ffd97b;border:1px solid rgba(255,220,140,.28)">WINDOW 19s</div>
+        <div class="eyebrow" style="color:#ffd97b">03 Selected Concept 5</div>
+        <h2>Last Eclipse: Ignite the Heart</h2>
+        <div class="subtitle">일식 창이 완전히 닫히기 전에 봉인 고리를 열고 잠든 심장을 점화한다. 이번 장면은 예쁜 상징 화면이 아니라, 빛이 사라지기 직전의 마지막 점화 의식이어야 한다.</div>
+        <div class="badges">
+          <div class="badge">Goal: Ignite the sleeping heart</div>
+          <div class="badge">Threat: Eclipse window is closing</div>
+          <div class="badge">Hit Meaning: Light descends deeper</div>
+        </div>
+        <div class="mini"><span>Eclipse Disk</span><span>Light Path</span><span>Heart Altar</span></div>
+        <div class="caption">If the light dies now, the world sleeps forever.</div>
+        <div class="paddle" style="left:706px;bottom:72px;width:188px;color:#ffe08a;background:linear-gradient(90deg,#ffcc57,#fff0a5)"></div>
+        <div class="ball" style="left:790px;bottom:118px;color:#fff0b2;background:#fff9db"></div>
+        <div class="brick" style="left:622px;top:128px;width:116px;height:28px;background:#4a315f"></div>
+        <div class="brick" style="left:744px;top:104px;width:112px;height:28px;background:#6a467f"></div>
+        <div class="brick" style="left:866px;top:128px;width:116px;height:28px;background:#8c61a5"></div>
+        <div class="brick" style="left:684px;top:176px;width:104px;height:24px;background:#70588f"></div>
+        <div class="brick" style="left:812px;top:176px;width:104px;height:24px;background:#70588f"></div>
+        <svg class="scene" viewBox="0 0 1600 500" aria-hidden="true">
+          <defs>
+            <radialGradient id="sunHeart" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#fff8dc"/>
+              <stop offset="100%" stop-color="#ffc957"/>
+            </radialGradient>
+          </defs>
+          <circle cx="800" cy="110" r="92" fill="#f0c75e"/>
+          <circle cx="800" cy="110" r="74" fill="#0f0a17"/>
+          <path d="M800 184 L800 332" stroke="#ffd76f" stroke-width="12" stroke-linecap="round"/>
+          <circle cx="800" cy="250" r="92" fill="none" stroke="#6e4f87" stroke-width="12"/>
+          <circle cx="800" cy="250" r="62" fill="none" stroke="#9a73b6" stroke-width="8"/>
+          <path d="M728 250 L872 250" stroke="#ffd76f" stroke-width="8" stroke-linecap="round"/>
+          <rect x="730" y="315" width="140" height="92" rx="28" fill="#1f142a" stroke="#8f63b0" stroke-width="6"/>
+          <path d="M800 332 C768 350, 760 392, 800 408 C840 392, 832 350, 800 332 Z" fill="url(#sunHeart)" stroke="#fff2be" stroke-width="6"/>
+          <path d="M670 365 C720 338, 760 338, 800 350" stroke="#6c4d85" stroke-width="4" fill="none"/>
+          <path d="M930 365 C880 338, 840 338, 800 350" stroke="#6c4d85" stroke-width="4" fill="none"/>
+          <path d="M640 62 C700 20, 900 20, 960 62" stroke="#f4db90" stroke-width="2" fill="none" opacity=".5"/>
+        </svg>
+      </section>
+    </div>
+  </div>
+</body>
+</html>

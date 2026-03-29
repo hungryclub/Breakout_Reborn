@@ -1,0 +1,11 @@
+export const BALL_RADIUS = 18;
+export const BALL_FILL_COLOR = 0xf4f7fb;
+export const BALL_STROKE_COLOR = 0x6dd7ff;
+export const BALL_STROKE_ALPHA = 0.9;
+export const BALL_START_SPEED = 1120;
+export const BALL_LAUNCH_HORIZONTAL_RATIO = 0.22;
+export const BALL_LAUNCH_LOCK_MS = 180;
+export const BALL_ATTACH_OFFSET = 14;
+export const BALL_PADDLE_COLLISION_LOCK_MS = 80;
+export const BALL_MIN_BOUNCE_ANGLE = 20;
+export const BALL_MAX_BOUNCE_ANGLE = 75;

@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Breakout Reborn - Design Party Round 11</title>
+  <style>
+    :root { --ink:#f5f7fc; --line:rgba(255,255,255,.06); --panel:rgba(8,12,20,.84); }
+    * { box-sizing:border-box; }
+    body {
+      margin:0; color:var(--ink);
+      font-family:"Segoe UI","Noto Sans KR",sans-serif;
+      background:
+        radial-gradient(circle at 50% 0%, rgba(117,142,219,.08), transparent 22%),
+        linear-gradient(180deg,#04070d 0%,#09111e 100%);
+    }
+    .page { width:1600px; margin:0 auto; padding:24px; }
+    .intro {
+      display:grid; grid-template-columns:1.35fr .85fr; gap:24px; padding:28px;
+      border-radius:30px; background:var(--panel); border:1px solid var(--line);
+      margin-bottom:22px; backdrop-filter:blur(10px);
+    }
+    .eyebrow { color:#95c6ff; font-size:12px; letter-spacing:.18em; text-transform:uppercase; }
+    h1 { margin:12px 0; font-size:34px; line-height:1.08; letter-spacing:-.03em; }
+    .intro p, .notes { color:#c9d3e6; line-height:1.75; font-size:15px; }
+    .notes { font-size:13px; }
+    .stack { display:grid; gap:22px; }
+    .sample { position:relative; min-height:820px; overflow:hidden; border-radius:34px; border:1px solid rgba(255,255,255,.07); padding:34px; }
+    .sample h2 { margin:8px 0 10px; font-size:44px; line-height:1.03; max-width:650px; letter-spacing:-.03em; }
+    .subtitle { max-width:560px; color:#e0e6f2; font-size:17px; line-height:1.76; }
+    .tag { position:absolute; left:34px; top:30px; color:rgba(255,255,255,.72); font-size:12px; letter-spacing:.15em; text-transform:uppercase; }
+    .status { position:absolute; right:30px; top:30px; padding:11px 15px; border-radius:18px; font-size:12px; font-weight:700; letter-spacing:.09em; backdrop-filter:blur(10px); }
+    .hook { position:absolute; left:34px; bottom:40px; max-width:720px; font-size:30px; line-height:1.16; font-weight:800; letter-spacing:-.03em; text-shadow:0 14px 34px rgba(0,0,0,.54); }
+    .caption { position:absolute; right:34px; bottom:34px; text-align:right; color:#dde6f3; font-size:12px; line-height:1.7; text-transform:uppercase; letter-spacing:.12em; }
+    .sample-a {
+      background:
+        radial-gradient(circle at 76% 22%, rgba(255,162,110,.18), transparent 16%),
+        linear-gradient(180deg,#0d0f16 0%,#151015 48%,#08080d 100%);
+    }
+    .sample-b {
+      background:
+        radial-gradient(circle at 50% 14%, rgba(255,221,126,.22), transparent 15%),
+        linear-gradient(180deg,#100e19 0%,#171229 48%,#07070f 100%);
+    }
+    svg.scene { position:absolute; inset:0; width:100%; height:100%; }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <section class="intro">
+      <div>
+        <div class="eyebrow">Breakout Reborn / Design Party Round 11</div>
+        <h1>그래픽 키아트에서 더 나아가, 콘셉트아트풍 장면 일러스트로 다시 짜기</h1>
+        <p>이번 라운드는 앞선 카드형 메인 아트 구성을 일부러 끊고, 한 장면의 세계와 사건을 먼저 읽히게 하는 데 집중했습니다. 정보 배치보다 풍경, 원근, 중첩, 공기층, 서사적 구도를 우선해 “게임 그래픽”보다 “콘셉트아트 일러스트”에 더 가까운 방향으로 다시 잡았습니다.</p>
+      </div>
+      <div class="notes">
+        <div class="eyebrow" style="margin-bottom:8px">Concept Art Goals</div>
+        <div>1. 오브젝트를 중앙에 놓는 대신 장면 전체의 흐름을 만든다</div>
+        <div>2. 플레이 사건이 풍경 속에서 보이도록 한다</div>
+        <div>3. 한 장의 아트북 일러스트처럼 읽히게 한다</div>
+        <div>4. 메인 UI가 아니라 세계의 순간을 보여준다</div>
+      </div>
+    </section>
+
+    <div class="stack">
+      <section class="sample sample-a">
+        <div class="tag">Round 11 / Concept Art Siege</div>
+        <div class="status" style="background:rgba(255,149,104,.12);border:1px solid rgba(255,186,148,.22);color:#ffcb9f">CONCEPT SIEGE</div>
+        <div style="padding-top:26px">
+          <div class="eyebrow" style="color:#ffc48f">Heart Gate Siege / Concept Art Reset</div>
+          <h2>Assault the Warden at the Foot of the Burning Citadel</h2>
+          <div class="subtitle">수문장 자체를 정면 아이콘처럼 두지 않고, 불타는 성채 입구 아래에서 올려다보는 공성 장면으로 재구성했습니다. 플레이어 측 에너지 궤적, 무너지는 문 파편, 연기 속에서 드러나는 거대한 적의 몸체가 한 장면 안에서 연결되도록 만들었습니다.</div>
+        </div>
+        <div class="hook">This should feel like a battle painting, not a title card.</div>
+        <div class="caption">Concept Frame<br/>Citadel / Warden / Assault</div>
+        <svg class="scene" viewBox="0 0 1600 820">
+          <defs>
+            <filter id="r11a_blur36"><feGaussianBlur stdDeviation="36"/></filter>
+            <filter id="r11a_blur20"><feGaussianBlur stdDeviation="20"/></filter>
+            <filter id="r11a_shadow" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="0" dy="30" stdDeviation="28" flood-color="#000" flood-opacity=".52"/></filter>
+            <radialGradient id="r11a_fire" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#fff7d8"/>
+              <stop offset="46%" stop-color="#ffd293"/>
+              <stop offset="100%" stop-color="#ff7546"/>
+            </radialGradient>
+            <linearGradient id="r11a_stone" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#3b434d"/>
+              <stop offset="55%" stop-color="#1e2730"/>
+              <stop offset="100%" stop-color="#10161e"/>
+            </linearGradient>
+          </defs>
+
+          <ellipse cx="1200" cy="648" rx="320" ry="90" fill="#000" opacity=".22" filter="url(#r11a_blur36)"/>
+          <path d="M1060 720 C1120 614, 1160 508, 1180 404 C1202 292, 1262 190, 1374 102 L1498 102 C1438 170, 1410 238, 1398 308 C1386 380, 1396 450, 1430 530 C1458 596, 1490 642, 1548 720 Z" fill="#18131a"/>
+          <path d="M1186 728 C1242 610, 1286 494, 1308 378 C1324 296, 1364 208, 1444 132 L1552 132 C1518 180, 1500 230, 1498 292 C1494 358, 1512 424, 1540 492 C1570 562, 1600 620, 1600 720 Z" fill="#25161a" opacity=".84"/>
+          <path d="M980 682 C1096 586, 1218 388, 1390 228" stroke="#3a2219" stroke-width="118" stroke-linecap="round" opacity=".32" filter="url(#r11a_blur36)"/>
+
+          <g filter="url(#r11a_shadow)">
+            <path d="M1000 574
+                     C988 500, 1006 414, 1050 342
+                     C1092 274, 1160 224, 1246 204
+                     C1334 184, 1416 206, 1476 266
+                     C1532 322, 1550 406, 1536 492
+                     C1522 572, 1476 632, 1410 670
+                     C1344 706, 1260 718, 1172 700
+                     C1092 684, 1032 640, 1000 574 Z"
+                  fill="url(#r11a_stone)"/>
+            <path d="M1064 360 C1134 310, 1198 286, 1288 284 C1370 282, 1442 308, 1494 358 C1434 388, 1382 402, 1320 406 C1224 412, 1144 398, 1064 360 Z" fill="#141a21"/>
+            <ellipse cx="1188" cy="354" rx="36" ry="22" fill="url(#r11a_fire)"/>
+            <ellipse cx="1372" cy="360" rx="36" ry="22" fill="url(#r11a_fire)"/>
+            <ellipse cx="1188" cy="354" rx="90" ry="48" fill="#ff9e70" opacity=".22" filter="url(#r11a_blur20)"/>
+            <ellipse cx="1372" cy="360" rx="90" ry="48" fill="#ff9e70" opacity=".22" filter="url(#r11a_blur20)"/>
+            <path d="M1208 438 C1248 402, 1316 392, 1380 414 C1420 428, 1452 456, 1470 496 C1432 552, 1388 592, 1338 614 C1284 638, 1228 634, 1178 602 C1140 578, 1108 540, 1086 490 C1128 486, 1166 470, 1208 438 Z" fill="#151b22"/>
+            <ellipse cx="1288" cy="510" rx="78" ry="102" fill="url(#r11a_fire)"/>
+            <ellipse cx="1288" cy="510" rx="136" ry="166" fill="#ffbb8a" opacity=".14" filter="url(#r11a_blur20)"/>
+          </g>
+
+          <path d="M308 676 C398 640, 480 590, 570 518" stroke="#8fe7ff" stroke-width="12" stroke-linecap="round"/>
+          <path d="M312 676 C404 640, 488 594, 584 524" stroke="#bdf5ff" stroke-width="4" stroke-linecap="round"/>
+          <ellipse cx="318" cy="676" rx="24" ry="24" fill="#fff7d9"/>
+          <ellipse cx="318" cy="676" rx="52" ry="26" fill="#8fe7ff" opacity=".16" filter="url(#r11a_blur20)"/>
+          <path d="M624 512 L720 486 L694 556 Z" fill="#ffb06c" opacity=".70"/>
+          <path d="M736 466 L814 444 L796 506 Z" fill="#ff9e5c" opacity=".52"/>
+        </svg>
+      </section>
+
+      <section class="sample sample-b">
+        <div class="tag">Round 11 / Concept Art Awakening</div>
+        <div class="status" style="background:rgba(255,220,140,.10);border:1px solid rgba(255,230,165,.22);color:#ffe9ab">CONCEPT ECLIPSE</div>
+        <div style="padding-top:26px">
+          <div class="eyebrow" style="color:#ffe6a8">Last Eclipse / Concept Art Reset</div>
+          <h2>Awaken the Dawnheart Beneath the Dying Eclipse</h2>
+          <div class="subtitle">이번엔 존재만 중앙에 세우지 않고, 절벽과 제단, 떠도는 파편, 안개 낀 하늘까지 모두 반응하는 장면으로 다시 구성했습니다. 심장체는 풍경 한가운데서 깨어나고, 일식 광선이 아니라 세계 전체가 다시 빛을 회복하는 순간처럼 느껴지게 합니다.</div>
+        </div>
+        <div class="hook">This should read like myth and landscape at the same time.</div>
+        <div class="caption">Concept Frame<br/>Eclipse / Shrine / Dawnheart</div>
+        <svg class="scene" viewBox="0 0 1600 820">
+          <defs>
+            <filter id="r11b_blur36"><feGaussianBlur stdDeviation="36"/></filter>
+            <filter id="r11b_blur20"><feGaussianBlur stdDeviation="20"/></filter>
+            <filter id="r11b_shadow" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="0" dy="30" stdDeviation="28" flood-color="#000" flood-opacity=".52"/></filter>
+            <radialGradient id="r11b_heart" cx="50%" cy="50%" r="52%">
+              <stop offset="0%" stop-color="#fff9df"/>
+              <stop offset="45%" stop-color="#ffe3a6"/>
+              <stop offset="100%" stop-color="#ffb66c"/>
+            </radialGradient>
+          </defs>
+
+          <circle cx="800" cy="108" r="182" fill="#f5d96d"/>
+          <circle cx="800" cy="108" r="130" fill="#080710"/>
+          <ellipse cx="800" cy="118" rx="196" ry="44" fill="#fff0c0" opacity=".08" filter="url(#r11b_blur36)"/>
+
+          <path d="M206 720 C278 654, 350 616, 454 596 C564 574, 646 520, 712 424 L786 424 C740 522, 708 604, 694 720 Z" fill="#1b1730"/>
+          <path d="M1394 720 C1322 654, 1250 616, 1146 596 C1036 574, 954 520, 888 424 L814 424 C860 522, 892 604, 906 720 Z" fill="#1b1730"/>
+          <ellipse cx="800" cy="690" rx="320" ry="90" fill="#000" opacity=".22" filter="url(#r11b_blur36)"/>
+          <ellipse cx="800" cy="534" rx="260" ry="120" fill="#ffce82" opacity=".10" filter="url(#r11b_blur36)"/>
+
+          <g filter="url(#r11b_shadow)">
+            <path d="M670 574
+                     C692 520, 732 474, 772 442
+                     C792 426, 800 410, 800 392
+                     C800 410, 808 426, 828 442
+                     C868 474, 908 520, 930 574
+                     C906 612, 874 644, 832 664
+                     C820 670, 810 674, 800 676
+                     C790 674, 780 670, 768 664
+                     C726 644, 694 612, 670 574 Z"
+                  fill="#18142b"/>
+            <path d="M716 548
+                     C734 508, 760 476, 790 454
+                     C796 450, 800 444, 800 438
+                     C800 444, 804 450, 810 454
+                     C840 476, 866 508, 884 548
+                     C868 584, 846 612, 818 630
+                     C812 634, 806 638, 800 640
+                     C794 638, 788 634, 782 630
+                     C754 612, 732 584, 716 548 Z"
+                  fill="#2a214a"/>
+            <ellipse cx="800" cy="546" rx="62" ry="92" fill="url(#r11b_heart)"/>
+            <ellipse cx="800" cy="546" rx="126" ry="166" fill="#ffd592" opacity=".16" filter="url(#r11b_blur20)"/>
+            <path d="M672 478 C634 452 606 420 592 378 C578 336 588 300 620 270 C654 240 698 232 740 248 C722 286 714 322 716 364 C718 406 730 446 748 480 C724 490 700 492 672 478 Z" fill="#575a96" opacity=".84"/>
+            <path d="M928 478 C966 452 994 420 1008 378 C1022 336 1012 300 980 270 C946 240 902 232 860 248 C878 286 886 322 884 364 C882 406 870 446 852 480 C876 490 900 492 928 478 Z" fill="#575a96" opacity=".84"/>
+          </g>
+
+          <path d="M800 198 C802 318, 802 450, 800 642" stroke="#fff1c4" stroke-width="4" opacity=".62"/>
+          <path d="M800 226 C800 346, 800 466, 800 648" stroke="#ffdd89" stroke-width="12" opacity=".20" filter="url(#r11b_blur20)"/>
+          <ellipse cx="800" cy="650" rx="150" ry="46" fill="#ffdb8b" opacity=".10" filter="url(#r11b_blur20)"/>
+        </svg>
+      </section>
+    </div>
+  </div>
+</body>
+</html>

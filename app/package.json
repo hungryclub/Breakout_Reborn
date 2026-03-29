@@ -1,0 +1,23 @@
+{
+  "name": "breakout-reborn",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "test": "node --test tests/input-system.test.ts tests/ball-system.test.ts tests/reflection-system.test.ts tests/brick-system.test.ts tests/combo-system.test.ts tests/powerup-system.test.ts tests/powerup-effect-system.test.ts tests/stage-system.test.ts tests/meta-system.test.ts tests/reward-system.test.ts tests/presentation-system.test.ts",
+    "test:e2e": "playwright test",
+    "test:e2e:bot": "playwright test e2e/bot-play.spec.ts",
+    "test:e2e:headed": "playwright test --headed"
+  },
+  "dependencies": {
+    "phaser": "^3.90.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.55.0",
+    "typescript": "^5.9.2",
+    "vite": "^7.1.5"
+  }
+}

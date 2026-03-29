@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Breakout Reborn Design Party Round 2</title>
+    <style>
+      :root { color-scheme: dark; font-family: "Segoe UI", Arial, sans-serif; }
+      * { box-sizing: border-box; }
+      body { margin: 0; min-height: 100vh; background: #06070a; color: #fff; }
+      .page { display: grid; gap: 56px; justify-content: center; padding: 52px 24px 104px; }
+      .artboard { position: relative; width: 960px; height: 1520px; overflow: hidden; border-radius: 42px; isolation: isolate; box-shadow: 0 48px 140px rgba(0,0,0,.52); }
+      .grain { position: absolute; inset: 0; opacity: .08; background-image:
+        radial-gradient(circle at 15% 20%, rgba(255,255,255,.9) 0 1px, transparent 1px),
+        radial-gradient(circle at 72% 38%, rgba(255,255,255,.8) 0 1px, transparent 1px),
+        radial-gradient(circle at 40% 80%, rgba(255,255,255,.75) 0 1px, transparent 1px); background-size: 170px 170px; }
+      .frame { position: absolute; inset: 26px; border-radius: 36px; border: 1px solid rgba(255,255,255,.1); }
+      .header { position: absolute; left: 68px; right: 68px; top: 54px; z-index: 4; display: grid; gap: 18px; }
+      .header-main { display: flex; align-items: center; justify-content: space-between; padding: 24px 28px; border-radius: 26px; }
+      .eyebrow { font-size: 13px; letter-spacing: .32em; text-transform: uppercase; opacity: .82; }
+      .title { margin-top: 10px; font-size: 36px; font-weight: 800; letter-spacing: .01em; }
+      .metrics { display: flex; gap: 12px; }
+      .chip { padding: 10px 16px; border-radius: 999px; font-size: 12px; font-weight: 800; letter-spacing: .18em; text-transform: uppercase; }
+      .subline { display: flex; justify-content: center; gap: 16px; font-size: 14px; font-weight: 700; letter-spacing: .22em; text-transform: uppercase; }
+      .playfield { position: absolute; inset: 212px 60px 72px; overflow: hidden; border-radius: 36px; }
+      .copy { position: absolute; left: 88px; right: 88px; top: 538px; z-index: 3; text-align: center; }
+      .copy-label { margin-bottom: 20px; font-size: 15px; font-weight: 800; letter-spacing: .34em; text-transform: uppercase; }
+      .headline { font-size: 72px; line-height: 1.05; font-weight: 800; letter-spacing: -.04em; }
+      .body { margin-top: 20px; font-size: 23px; line-height: 1.62; opacity: .88; }
+      .left-rail, .right-rail { position: absolute; z-index: 3; display: grid; gap: 14px; }
+      .left-rail { left: 34px; top: 294px; }
+      .right-rail { right: 34px; top: 294px; }
+      .pill { min-width: 56px; height: 56px; padding: 0 14px; display: grid; place-items: center; border-radius: 18px; font-size: 12px; font-weight: 900; letter-spacing: .18em; text-transform: uppercase; }
+      .brick-grid { position: absolute; left: 38px; right: 38px; top: 48px; display: grid; grid-template-columns: repeat(6, 1fr); gap: 14px; }
+      .brick { height: 58px; border-radius: 16px; }
+      .hero { position: absolute; inset: 0; z-index: 1; }
+      .ball,.paddle,.trail,.sigil,.orbit,.light-column,.arena-ring,.artifact-ring,.prism-panel { position: absolute; }
+      .footer { position: absolute; left: 72px; right: 72px; bottom: 80px; z-index: 4; display: flex; justify-content: space-between; align-items: center; font-size: 14px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; }
+      .theme-tag { padding: 12px 18px; border-radius: 999px; }
+      .note { opacity: .82; }
+
+      .sample-1 { background: radial-gradient(circle at 50% 0%, rgba(134,208,255,.32), transparent 32%), radial-gradient(circle at 50% 58%, rgba(82,129,255,.14), transparent 26%), linear-gradient(180deg, #07101f 0%, #03060d 48%, #010205 100%); }
+      .sample-1 .header-main,.sample-1 .playfield { background: linear-gradient(180deg, rgba(10,20,40,.74), rgba(5,9,18,.92)); border: 1px solid rgba(148,220,255,.16); backdrop-filter: blur(18px); }
+      .sample-1 .eyebrow,.sample-1 .copy-label,.sample-1 .note { color: #9fe0ff; }
+      .sample-1 .chip,.sample-1 .theme-tag,.sample-1 .pill { color: #dff7ff; background: rgba(145,214,255,.1); border: 1px solid rgba(145,214,255,.22); }
+      .sample-1 .brick { background: linear-gradient(180deg, rgba(255,255,255,.16), transparent 18%), linear-gradient(180deg, rgba(138,185,255,.14), rgba(19,40,76,.72)); border: 1px solid rgba(176,225,255,.18); box-shadow: 0 0 24px rgba(86,147,255,.12); }
+      .sample-1 .sigil { left: 50%; top: 240px; width: 360px; height: 360px; transform: translateX(-50%); border-radius: 50%; border: 2px solid rgba(155,227,255,.24); box-shadow: 0 0 0 24px rgba(98,161,255,.05), 0 0 120px rgba(108,188,255,.22); }
+      .sample-1 .orbit { left: 50%; top: 270px; width: 300px; height: 300px; transform: translateX(-50%); border-radius: 50%; border: 1px dashed rgba(165,223,255,.22); }
+      .sample-1 .paddle { left: 50%; bottom: 168px; width: 250px; height: 24px; transform: translateX(-50%); border-radius: 999px; background: linear-gradient(90deg, #7ac9ff, #fbfdff, #7ac9ff); box-shadow: 0 0 32px rgba(126,214,255,.38), 0 0 90px rgba(112,160,255,.18); }
+      .sample-1 .ball { left: 50%; bottom: 228px; width: 34px; height: 34px; transform: translateX(-50%); border-radius: 50%; background: radial-gradient(circle at 35% 35%, #fff 0 30%, #dff7ff 31%, #92d8ff 74%); box-shadow: 0 0 42px rgba(180,238,255,.52); }
+      .sample-1 .trail { left: 50%; bottom: 182px; width: 220px; height: 90px; transform: translateX(-50%); background: radial-gradient(circle at 50% 50%, rgba(112,173,255,.26), transparent 62%); filter: blur(20px); }
+
+      .sample-2 { background: radial-gradient(circle at 18% 8%, rgba(255,132,153,.14), transparent 24%), radial-gradient(circle at 80% 12%, rgba(110,244,255,.18), transparent 26%), linear-gradient(180deg, #130918 0%, #08070c 52%, #040306 100%); }
+      .sample-2 .header-main,.sample-2 .playfield { background: linear-gradient(180deg, rgba(22,11,27,.76), rgba(8,6,12,.92)); border: 1px solid rgba(255,169,196,.16); }
+      .sample-2 .eyebrow,.sample-2 .copy-label,.sample-2 .note { color: #ffc2d4; }
+      .sample-2 .chip,.sample-2 .theme-tag,.sample-2 .pill { color: #fff1f6; background: rgba(255,118,165,.1); border: 1px solid rgba(255,118,165,.22); }
+      .sample-2 .brick { background: linear-gradient(180deg, rgba(255,255,255,.18), transparent 16%), linear-gradient(135deg, rgba(113,245,255,.96), rgba(161,105,255,.84) 55%, rgba(255,124,160,.92)); border: 1px solid rgba(255,255,255,.2); box-shadow: 0 0 28px rgba(171,117,255,.18); }
+      .sample-2 .light-column { left: 50%; top: 190px; width: 360px; height: 760px; transform: translateX(-50%); border-radius: 180px; background: radial-gradient(circle at 50% 20%, rgba(255,214,225,.4), transparent 26%), linear-gradient(180deg, rgba(109,245,255,.12), rgba(188,102,255,.18), rgba(255,115,154,.06)); filter: blur(6px); }
+      .sample-2 .sigil { left: 50%; top: 272px; width: 280px; height: 280px; transform: translateX(-50%); border-radius: 36px; background: linear-gradient(180deg, rgba(255,255,255,.22), rgba(255,255,255,.03)), linear-gradient(135deg, rgba(107,241,255,.34), rgba(177,95,255,.2), rgba(255,102,148,.28)); border: 1px solid rgba(255,255,255,.18); box-shadow: 0 0 96px rgba(173,116,255,.18); }
+      .sample-2 .paddle { left: 50%; bottom: 154px; width: 250px; height: 34px; transform: translateX(-50%); border-radius: 18px; background: linear-gradient(180deg, rgba(255,255,255,.32), transparent 18%), linear-gradient(90deg, rgba(93,231,255,.88), rgba(255,120,164,.92)); border: 1px solid rgba(255,255,255,.24); box-shadow: 0 0 30px rgba(122,240,255,.22); }
+      .sample-2 .ball { left: 50%; bottom: 220px; width: 36px; height: 36px; transform: translateX(-50%); border-radius: 50%; background: radial-gradient(circle at 35% 35%, #fff 0 28%, #fff6fb 29%, #ffd1df 74%); box-shadow: 0 0 36px rgba(255,172,201,.4); }
+      .sample-2 .trail { left: 50%; bottom: 180px; width: 220px; height: 90px; transform: translateX(-50%); background: radial-gradient(circle at 50% 50%, rgba(184,116,255,.24), transparent 62%); filter: blur(22px); }
+
+      .sample-3 { background: radial-gradient(circle at 82% 10%, rgba(123,210,255,.18), transparent 24%), radial-gradient(circle at 16% 12%, rgba(255,93,116,.16), transparent 22%), linear-gradient(180deg, #111419 0%, #07090c 56%, #030406 100%); }
+      .sample-3 .header-main,.sample-3 .playfield { background: linear-gradient(180deg, rgba(20,22,28,.82), rgba(8,9,12,.94)); border: 1px solid rgba(188,216,255,.14); }
+      .sample-3 .eyebrow,.sample-3 .copy-label,.sample-3 .note { color: #b6dfff; }
+      .sample-3 .chip,.sample-3 .theme-tag,.sample-3 .pill { color: #f3f7fc; background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.14); }
+      .sample-3 .brick { background: linear-gradient(180deg, rgba(255,255,255,.22), transparent 16%), linear-gradient(135deg, #f5f7fb 0%, #748196 42%, #2a3039 100%); border: 1px solid rgba(255,255,255,.18); }
+      .sample-3 .arena-ring { left: 50%; top: 286px; width: 540px; height: 540px; transform: translateX(-50%); border-radius: 50%; border: 1px solid rgba(255,255,255,.12); box-shadow: 0 0 0 28px rgba(255,255,255,.03), inset 0 0 80px rgba(255,255,255,.03); }
+      .sample-3 .sigil { left: 50%; top: 406px; width: 360px; height: 10px; transform: translateX(-50%); border-radius: 999px; background: linear-gradient(90deg, #ff4b67, #ffffff, #81d0ff); box-shadow: 0 0 48px rgba(255,75,103,.22); }
+      .sample-3 .paddle { left: 50%; bottom: 150px; width: 280px; height: 32px; transform: translateX(-50%) skewX(-12deg); border-radius: 10px; background: linear-gradient(90deg, #1f2734, #8f9db1); border: 1px solid rgba(255,255,255,.22); }
+      .sample-3 .ball { left: 50%; bottom: 210px; width: 34px; height: 34px; transform: translateX(-50%); border-radius: 50%; background: radial-gradient(circle at 35% 35%, #fff 0 28%, #eef3f9 29%, #b3c4d7 74%); }
+      .sample-3 .trail { left: 50%; bottom: 176px; width: 250px; height: 88px; transform: translateX(-50%); background: radial-gradient(circle at 50% 50%, rgba(130,208,255,.2), transparent 62%); filter: blur(20px); }
+
+      .sample-4 { background: radial-gradient(circle at 50% 6%, rgba(251,214,128,.18), transparent 20%), radial-gradient(circle at 78% 14%, rgba(44,230,205,.1), transparent 22%), linear-gradient(180deg, #18120f 0%, #0d0a08 54%, #050403 100%); }
+      .sample-4 .header-main,.sample-4 .playfield { background: linear-gradient(180deg, rgba(28,20,15,.86), rgba(11,8,6,.95)); border: 1px solid rgba(239,202,124,.14); }
+      .sample-4 .eyebrow,.sample-4 .copy-label,.sample-4 .note { color: #f1ca8b; }
+      .sample-4 .chip,.sample-4 .theme-tag,.sample-4 .pill { color: #fbf0dd; background: rgba(239,202,124,.08); border: 1px solid rgba(239,202,124,.18); }
+      .sample-4 .brick { background: linear-gradient(180deg, rgba(255,233,196,.18), transparent 18%), linear-gradient(180deg, #7a5334 0%, #352418 100%); border: 1px solid rgba(241,202,139,.18); box-shadow: inset 0 0 18px rgba(255,188,98,.08); }
+      .sample-4 .artifact-ring { left: 50%; top: 244px; width: 380px; height: 380px; transform: translateX(-50%); border-radius: 50%; border: 3px solid rgba(241,202,139,.28); box-shadow: 0 0 0 22px rgba(241,202,139,.04), 0 0 110px rgba(255,171,82,.12); }
+      .sample-4 .sigil { left: 50%; top: 326px; width: 220px; height: 220px; transform: translateX(-50%); border-radius: 28px; clip-path: polygon(50% 0%,100% 50%,50% 100%,0% 50%); border: 2px solid rgba(241,202,139,.42); box-shadow: inset 0 0 44px rgba(241,202,139,.08); }
+      .sample-4 .paddle { left: 50%; bottom: 154px; width: 256px; height: 28px; transform: translateX(-50%); border-radius: 14px; background: linear-gradient(90deg, #5f412e, #c9995a); border: 1px solid rgba(255,234,201,.22); }
+      .sample-4 .ball { left: 50%; bottom: 214px; width: 34px; height: 34px; transform: translateX(-50%); border-radius: 50%; background: radial-gradient(circle at 35% 35%, #fff5dd 0 28%, #f7d8a5 29%, #c89056 74%); box-shadow: 0 0 28px rgba(245,186,96,.2); }
+      .sample-4 .trail { left: 50%; bottom: 180px; width: 220px; height: 86px; transform: translateX(-50%); background: radial-gradient(circle at 50% 50%, rgba(255,183,89,.16), transparent 62%); filter: blur(18px); }
+
+      .sample-5 { background: radial-gradient(circle at 18% 10%, rgba(255,176,155,.18), transparent 26%), radial-gradient(circle at 80% 10%, rgba(161,212,255,.2), transparent 28%), linear-gradient(180deg, #f8f4ec 0%, #ebe6dc 100%); color: #172334; }
+      .sample-5 .frame { border-color: rgba(23,35,52,.08); }
+      .sample-5 .header-main,.sample-5 .playfield { background: linear-gradient(180deg, rgba(255,255,255,.78), rgba(249,245,238,.88)); border: 1px solid rgba(23,35,52,.08); }
+      .sample-5 .eyebrow,.sample-5 .copy-label,.sample-5 .note { color: #5b79a7; }
+      .sample-5 .title,.sample-5 .headline { color: #142133; }
+      .sample-5 .body { color: rgba(20,33,51,.78); }
+      .sample-5 .chip,.sample-5 .theme-tag,.sample-5 .pill { color: #223862; background: rgba(255,255,255,.8); border: 1px solid rgba(23,35,52,.1); }
+      .sample-5 .brick { background: linear-gradient(180deg, rgba(255,255,255,.28), transparent 16%), linear-gradient(135deg, #ffffff 0%, #dbe8fb 40%, #ffdddc 100%); border: 1px solid rgba(23,35,52,.08); box-shadow: 0 12px 24px rgba(34,53,87,.07); }
+      .sample-5 .prism-panel { left: 50%; top: 250px; width: 460px; height: 460px; transform: translateX(-50%) rotate(45deg); border-radius: 56px; background: linear-gradient(180deg, rgba(255,255,255,.72), rgba(255,255,255,.16)), linear-gradient(135deg, rgba(165,209,255,.34), rgba(255,186,178,.24)); border: 1px solid rgba(255,255,255,.6); box-shadow: 0 34px 70px rgba(44,67,104,.08), 0 0 60px rgba(143,198,255,.08); }
+      .sample-5 .sigil { left: 50%; top: 392px; width: 178px; height: 178px; transform: translateX(-50%); border-radius: 38px; background: linear-gradient(180deg, rgba(255,255,255,.84), rgba(255,255,255,.26)), linear-gradient(135deg, rgba(169,213,255,.34), rgba(255,195,181,.24)); border: 1px solid rgba(255,255,255,.7); }
+      .sample-5 .paddle { left: 50%; bottom: 156px; width: 244px; height: 30px; transform: translateX(-50%); border-radius: 16px; background: linear-gradient(90deg, #d7e5f9, #ffffff, #fbd8d7); box-shadow: 0 18px 28px rgba(29,51,84,.1); }
+      .sample-5 .ball { left: 50%; bottom: 216px; width: 34px; height: 34px; transform: translateX(-50%); border-radius: 50%; background: radial-gradient(circle at 35% 35%, #fff 0 28%, #f5fbff 29%, #d4e7ff 74%); box-shadow: 0 10px 22px rgba(76,121,196,.12); }
+      .sample-5 .trail { left: 50%; bottom: 180px; width: 200px; height: 86px; transform: translateX(-50%); background: radial-gradient(circle at 50% 50%, rgba(150,201,255,.16), transparent 62%); filter: blur(18px); }
+    </style>
+  </head>
+  <body>
+    <main class="page">
+      <section class="artboard sample-1" id="sample-1">
+        <div class="grain"></div><div class="frame"></div>
+        <div class="header">
+          <div class="header-main">
+            <div><div class="eyebrow">Concept 01</div><div class="title">Midnight Halo</div></div>
+            <div class="metrics"><div class="chip">Life x3</div><div class="chip">Combo x11</div><div class="chip">Score 4280</div></div>
+          </div>
+          <div class="subline">Sacred glow • black premium • controlled tension</div>
+        </div>
+        <div class="playfield">
+          <div class="brick-grid">
+            <div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div>
+            <div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div>
+            <div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div>
+          </div>
+          <div class="left-rail"><div class="pill">Halo</div><div class="pill">Aim</div><div class="pill">FX</div></div>
+          <div class="right-rail"><div class="pill">Pure</div><div class="pill">Noir</div><div class="pill">Core</div></div>
+          <div class="hero"><div class="sigil"></div><div class="orbit"></div><div class="trail"></div><div class="ball"></div><div class="paddle"></div></div>
+          <div class="copy">
+            <div class="copy-label">Web + Art + 2D + 3D + Player Consensus</div>
+            <div class="headline">Darkness that makes launch feel holy.</div>
+            <div class="body">설명보다 욕망이 먼저 오는 화면입니다. 공과 패들을 상징 오브젝트로 끌어올리고, 나머지는 모두 긴장감을 떠받치는 무대로 정리했습니다.</div>
+          </div>
+          <div class="footer"><div class="theme-tag">Most refined first impression</div><div class="note">Premium by omission, not decoration</div></div>
+        </div>
+      </section>
+
+      <section class="artboard sample-2" id="sample-2">
+        <div class="grain"></div><div class="frame"></div>
+        <div class="header">
+          <div class="header-main">
+            <div><div class="eyebrow">Concept 02</div><div class="title">Velvet Voltage</div></div>
+            <div class="metrics"><div class="chip">Life x3</div><div class="chip">Pulse x09</div><div class="chip">Score 4280</div></div>
+          </div>
+          <div class="subline">Luxury neon • glass energy • instant click appeal</div>
+        </div>
+        <div class="playfield">
+          <div class="brick-grid">
+            <div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div>
+            <div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div>
+            <div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div>
+          </div>
+          <div class="left-rail"><div class="pill">Glow</div><div class="pill">Club</div><div class="pill">Beat</div></div>
+          <div class="right-rail"><div class="pill">Glass</div><div class="pill">Lux</div><div class="pill">Pop</div></div>
+          <div class="hero"><div class="light-column"></div><div class="sigil"></div><div class="trail"></div><div class="ball"></div><div class="paddle"></div></div>
+          <div class="copy">
+            <div class="copy-label">Highest mass-market attraction</div>
+            <div class="headline">Expensive arcade electricity.</div>
+            <div class="body">싸구려 네온이 아니라 비싼 네온으로 설계한 방향입니다. 시안, 바이올렛, 코랄을 유리와 반사광 위에서 관리해 즉시 재밌어 보이게 만듭니다.</div>
+          </div>
+          <div class="footer"><div class="theme-tag">Best “that looks fun” response</div><div class="note">Immediate thumbnail stopping power</div></div>
+        </div>
+      </section>
+
+      <section class="artboard sample-3" id="sample-3">
+        <div class="grain"></div><div class="frame"></div>
+        <div class="header">
+          <div class="header-main">
+            <div><div class="eyebrow">Concept 03</div><div class="title">Crownline Sport</div></div>
+            <div class="metrics"><div class="chip">Life x3</div><div class="chip">Heat x12</div><div class="chip">Score 4280</div></div>
+          </div>
+          <div class="subline">Broadcast confidence • athletic pace • branded skill fantasy</div>
+        </div>
+        <div class="playfield">
+          <div class="brick-grid">
+            <div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div>
+            <div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div>
+            <div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div>
+          </div>
+          <div class="left-rail"><div class="pill">Pro</div><div class="pill">Match</div><div class="pill">Live</div></div>
+          <div class="right-rail"><div class="pill">Gear</div><div class="pill">Speed</div><div class="pill">Rank</div></div>
+          <div class="hero"><div class="arena-ring"></div><div class="sigil"></div><div class="trail"></div><div class="ball"></div><div class="paddle"></div></div>
+          <div class="copy">
+            <div class="copy-label">Skill-game commercial direction</div>
+            <div class="headline">A luxury sports brand disguised as breakout.</div>
+            <div class="body">경기 중계, 하이엔드 장비, 빠른 점수 리듬을 합친 방향입니다. 플레이어가 보는 순간 “실력 게임”이라고 읽히도록 날카롭게 밀었습니다.</div>
+          </div>
+          <div class="footer"><div class="theme-tag">Best competitive identity</div><div class="note">Fastest read for modern action players</div></div>
+        </div>
+      </section>
+
+      <section class="artboard sample-4" id="sample-4">
+        <div class="grain"></div><div class="frame"></div>
+        <div class="header">
+          <div class="header-main">
+            <div><div class="eyebrow">Concept 04</div><div class="title">Eclipse Relic</div></div>
+            <div class="metrics"><div class="chip">Life x3</div><div class="chip">Rune x07</div><div class="chip">Score 4280</div></div>
+          </div>
+          <div class="subline">Obsidian myth • sealed power • strong brand memory</div>
+        </div>
+        <div class="playfield">
+          <div class="brick-grid">
+            <div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div>
+            <div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div>
+            <div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div>
+          </div>
+          <div class="left-rail"><div class="pill">Rune</div><div class="pill">Seal</div><div class="pill">Wake</div></div>
+          <div class="right-rail"><div class="pill">Obsid</div><div class="pill">Gold</div><div class="pill">Myth</div></div>
+          <div class="hero"><div class="artifact-ring"></div><div class="sigil"></div><div class="trail"></div><div class="ball"></div><div class="paddle"></div></div>
+          <div class="copy">
+            <div class="copy-label">Boldest authored fantasy</div>
+            <div class="headline">Not a screen. A forbidden object.</div>
+            <div class="body">흑요석, 금속 인레이, 봉인 해제의 감각으로 정리한 방향입니다. 장식을 늘리기보다 상징을 압축해 브랜드 기억도를 가장 강하게 노렸습니다.</div>
+          </div>
+          <div class="footer"><div class="theme-tag">Strongest lore-and-brand hook</div><div class="note">Most memorable if executed cleanly</div></div>
+        </div>
+      </section>
+
+      <section class="artboard sample-5" id="sample-5">
+        <div class="grain"></div><div class="frame"></div>
+        <div class="header">
+          <div class="header-main">
+            <div><div class="eyebrow">Concept 05</div><div class="title">White Prism Interface</div></div>
+            <div class="metrics"><div class="chip">Life x3</div><div class="chip">Shift x05</div><div class="chip">Score 4280</div></div>
+          </div>
+          <div class="subline">Bright premium • product-grade order • luxury object energy</div>
+        </div>
+        <div class="playfield">
+          <div class="brick-grid">
+            <div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div>
+            <div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div>
+            <div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div>
+          </div>
+          <div class="left-rail"><div class="pill">Pure</div><div class="pill">Prism</div><div class="pill">Soft</div></div>
+          <div class="right-rail"><div class="pill">Muse</div><div class="pill">Form</div><div class="pill">Calm</div></div>
+          <div class="hero"><div class="prism-panel"></div><div class="sigil"></div><div class="trail"></div><div class="ball"></div><div class="paddle"></div></div>
+          <div class="copy">
+            <div class="copy-label">Highest sophistication ceiling</div>
+            <div class="headline">A game rendered like luxury hardware.</div>
+            <div class="body">밝은 프리미엄을 정면으로 다루는 가장 어려운 방향입니다. 성공하면 게임이라기보다 고급 인터랙티브 오브제처럼 보이는 희소한 무드를 가질 수 있습니다.</div>
+          </div>
+          <div class="footer"><div class="theme-tag">Most elegant if perfected</div><div class="note">Rare bright-direction premium aesthetic</div></div>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

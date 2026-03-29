@@ -1,0 +1,329 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Breakout Reborn - Design Party Round 8</title>
+  <style>
+    :root {
+      --bg: #050811;
+      --panel: rgba(10,15,26,0.94);
+      --line: rgba(255,255,255,0.08);
+      --ink: #eef4ff;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background:
+        radial-gradient(circle at 50% 0%, rgba(105,132,203,0.10), transparent 22%),
+        linear-gradient(180deg, #050811 0%, #091021 100%);
+      color: var(--ink);
+      font-family: "Segoe UI", "Noto Sans KR", sans-serif;
+    }
+    .page {
+      width: 1600px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+    .intro {
+      display: grid;
+      grid-template-columns: 1.35fr .85fr;
+      gap: 24px;
+      padding: 24px;
+      border-radius: 28px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      margin-bottom: 22px;
+    }
+    .eyebrow {
+      color: #8ecbff;
+      font-size: 12px;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+    }
+    h1 {
+      margin: 12px 0;
+      font-size: 34px;
+      line-height: 1.08;
+    }
+    .intro p {
+      margin: 0;
+      color: #c3d0e6;
+      line-height: 1.65;
+      max-width: 930px;
+      font-size: 15px;
+    }
+    .notes {
+      color: #d3ddef;
+      font-size: 13px;
+      line-height: 1.85;
+      padding-top: 6px;
+    }
+    .stack { display: grid; gap: 22px; }
+    .sample {
+      position: relative;
+      min-height: 700px;
+      overflow: hidden;
+      border-radius: 30px;
+      border: 1px solid rgba(255,255,255,0.09);
+      padding: 34px;
+    }
+    .sample h2 {
+      margin: 8px 0 8px;
+      font-size: 46px;
+      line-height: 1.02;
+      max-width: 620px;
+    }
+    .subtitle {
+      max-width: 560px;
+      color: #d7e1ef;
+      font-size: 17px;
+      line-height: 1.72;
+    }
+    .status {
+      position: absolute;
+      right: 30px;
+      top: 30px;
+      padding: 11px 15px;
+      border-radius: 18px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .09em;
+    }
+    .pillbar {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 24px;
+    }
+    .pill {
+      padding: 9px 13px;
+      border-radius: 999px;
+      font-size: 12px;
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.08);
+      color: #edf4ff;
+    }
+    .hook {
+      position: absolute;
+      left: 34px;
+      bottom: 40px;
+      max-width: 620px;
+      font-size: 30px;
+      line-height: 1.17;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      text-shadow: 0 8px 28px rgba(0,0,0,0.38);
+    }
+    .caption {
+      position: absolute;
+      right: 34px;
+      bottom: 34px;
+      text-align: right;
+      color: #d9e3f4;
+      font-size: 12px;
+      line-height: 1.7;
+      text-transform: uppercase;
+      letter-spacing: .12em;
+    }
+    .sample-a {
+      background:
+        radial-gradient(circle at 79% 44%, rgba(255,166,96,0.20), transparent 15%),
+        linear-gradient(180deg, #120c09 0%, #1b110d 46%, #080607 100%);
+    }
+    .sample-b {
+      background:
+        radial-gradient(circle at 50% 14%, rgba(255,223,114,0.24), transparent 16%),
+        radial-gradient(circle at 50% 79%, rgba(255,205,102,0.16), transparent 10%),
+        linear-gradient(180deg, #11091b 0%, #1a0f2c 46%, #080510 100%);
+    }
+    svg.scene {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+    }
+    .tag {
+      position: absolute;
+      left: 34px;
+      top: 30px;
+      color: rgba(255,255,255,0.7);
+      font-size: 12px;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <section class="intro">
+      <div>
+        <div class="eyebrow">Breakout Reborn / Design Party Round 8</div>
+        <h1>도형이 아니라 캐릭터와 드라마가 느껴지도록 다시 설계한 메인 아트</h1>
+        <p>이번 라운드는 두 방향의 중심 오브젝트를 구조물이 아니라 `존재`로 다시 해석했다. Heart Gate Siege는 버티는 파수자, Last Eclipse는 깨어나려는 봉인된 존재로 설계해 눈, 턱, 흉곽, 날개, 호흡 같은 비인간 캐릭터 단서를 넣었다.</p>
+      </div>
+      <div class="notes">
+        <div class="eyebrow" style="margin-bottom:8px">Character Rules</div>
+        <div>1. 얼굴이 없어도 시선과 감정이 보여야 한다</div>
+        <div>2. 완전 대칭을 깨고 버티는 힘, 열리는 힘을 드러낸다</div>
+        <div>3. 구조가 아니라 몸처럼 읽히게 한다</div>
+        <div>4. 유저가 상대를 꺾거나 존재를 깨운다고 느껴야 한다</div>
+      </div>
+    </section>
+
+    <div class="stack">
+      <section class="sample sample-a">
+        <div class="tag">Character Direction A</div>
+        <div class="status" style="background:rgba(255,119,69,.12);border:1px solid rgba(255,166,117,.28);color:#ffc294">IRON WARDEN</div>
+        <div style="padding-top:26px">
+          <div class="eyebrow" style="color:#ffb77c">Heart Gate Siege / The Iron Warden of the Heart Gate</div>
+          <h2>Break the Warden, Not Just the Door</h2>
+          <div class="subtitle">심장문은 더 이상 사각형 구조물이 아니다. 낮게 깔린 턱, 안으로 눌린 눈썹, 갈비뼈처럼 심장을 감싼 장갑 구조를 가진 `철심 수문장`이며, 마지막 공성 코어가 그 고집스러운 파수자를 비틀어 꺾는 순간을 포착한다.</div>
+          <div class="pillbar">
+            <div class="pill">Character Enemy</div>
+            <div class="pill">Shoulders / Ribcage / Jaw</div>
+            <div class="pill">Asymmetric Damage</div>
+            <div class="pill">Hostile Eye Slits</div>
+          </div>
+        </div>
+        <div class="hook">This fortress is still glaring back at you.</div>
+        <div class="caption">Character Arc<br/>Warden / Fortress / Collapse</div>
+        <svg class="scene" viewBox="0 0 1600 700" aria-hidden="true">
+          <defs>
+            <radialGradient id="wardenEye" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#fff1c2" />
+              <stop offset="100%" stop-color="#ff7d43" />
+            </radialGradient>
+            <radialGradient id="wardenHeart" cx="50%" cy="46%" r="52%">
+              <stop offset="0%" stop-color="#fff4cf" />
+              <stop offset="65%" stop-color="#ffcb85" />
+              <stop offset="100%" stop-color="#ff7f48" />
+            </radialGradient>
+          </defs>
+          <polygon points="340,630 930,630 1490,210 1036,210" fill="#180e0b" opacity=".92"/>
+          <polygon points="404,630 860,630 1264,274 935,274" fill="#120b09" opacity=".95"/>
+          <path d="M600 520 L1046 316" stroke="#ffb06c" stroke-width="4" stroke-dasharray="16 10" opacity=".7"/>
+
+          <path d="M1108 194 C1140 142, 1194 116, 1260 112 C1332 108, 1388 134, 1424 200
+                   L1412 230 C1370 204, 1328 192, 1262 194 C1200 196, 1152 210, 1118 244 Z"
+                fill="#5a2f20" opacity=".95"/>
+          <path d="M1074 232 C1106 210, 1140 198, 1192 196 L1184 452 C1132 434, 1098 408, 1074 368 Z"
+                fill="#6a3825" opacity=".92"/>
+          <path d="M1444 216 C1406 194, 1366 186, 1310 190 L1318 458 C1376 442, 1416 414, 1446 368 Z"
+                fill="#6a3825" opacity=".92"/>
+
+          <path d="M1186 178 C1222 162, 1302 162, 1338 180" stroke="#2b150f" stroke-width="20" stroke-linecap="round"/>
+          <path d="M1194 188 C1226 174, 1298 174, 1330 190" stroke="#ff9b62" stroke-width="5" stroke-linecap="round" opacity=".9"/>
+
+          <path d="M1180 220 C1214 238, 1240 244, 1262 244 C1286 244, 1312 238, 1346 220
+                   L1340 256 C1310 282, 1288 292, 1262 292 C1238 292, 1214 284, 1186 258 Z"
+                fill="#1a0e0b" stroke="#ff8f58" stroke-width="6"/>
+          <circle cx="1226" cy="252" r="16" fill="url(#wardenEye)"/>
+          <circle cx="1298" cy="252" r="16" fill="url(#wardenEye)"/>
+
+          <path d="M1204 300 C1222 344, 1222 404, 1208 462" stroke="#7b412c" stroke-width="18" stroke-linecap="round"/>
+          <path d="M1320 300 C1302 344, 1302 404, 1316 462" stroke="#7b412c" stroke-width="18" stroke-linecap="round"/>
+
+          <path d="M1230 312 C1240 302, 1284 302, 1294 312 L1308 410 C1294 430, 1278 440, 1262 440 C1244 440, 1228 430, 1216 410 Z"
+                fill="#190d0a" stroke="#8c482f" stroke-width="6"/>
+          <path d="M1262 324 L1262 424" stroke="url(#wardenHeart)" stroke-width="18" stroke-linecap="round"/>
+          <circle cx="1262" cy="372" r="30" fill="none" stroke="#ffbf76" stroke-width="8"/>
+          <circle cx="1262" cy="372" r="12" fill="#fff0c7"/>
+
+          <path d="M1188 470 C1218 500, 1304 500, 1336 470" stroke="#3b2118" stroke-width="26" stroke-linecap="round"/>
+          <path d="M1188 468 C1218 486, 1304 486, 1336 466" stroke="#8a4b31" stroke-width="8" stroke-linecap="round"/>
+
+          <rect x="1072" y="214" width="24" height="180" rx="12" fill="#311a13"/>
+          <rect x="1436" y="206" width="24" height="190" rx="12" fill="#311a13"/>
+          <circle cx="1084" cy="244" r="12" fill="#ff6f46"/>
+          <circle cx="1448" cy="238" r="12" fill="#ff6f46"/>
+          <circle cx="1084" cy="302" r="9" fill="#ffb279"/>
+          <circle cx="1448" cy="298" r="9" fill="#ffb279"/>
+
+          <ellipse cx="566" cy="616" rx="132" ry="24" fill="#34180f" opacity=".54"/>
+          <rect x="454" y="584" width="220" height="26" rx="999" fill="#ffba79"/>
+          <rect x="470" y="590" width="188" height="12" rx="999" fill="#ffe3ae"/>
+          <circle cx="650" cy="554" r="22" fill="#fff4d5"/>
+          <circle cx="650" cy="554" r="10" fill="#ffbf6e"/>
+          <path d="M1298 186 L1374 126" stroke="#6d3827" stroke-width="12" stroke-linecap="round" opacity=".7"/>
+          <path d="M1140 204 L1082 156" stroke="#6d3827" stroke-width="10" stroke-linecap="round" opacity=".65"/>
+        </svg>
+      </section>
+
+      <section class="sample sample-b">
+        <div class="tag">Character Direction B</div>
+        <div class="status" style="background:rgba(255,214,110,.12);border:1px solid rgba(255,220,140,.28);color:#ffe08f">BOUND DAWNHEART</div>
+        <div style="padding-top:26px">
+          <div class="eyebrow" style="color:#ffe08f">Last Eclipse: Ignite the Heart / Sunwake Guardian</div>
+          <h2>Wake the Dawnheart Before the Sky Seals Shut</h2>
+          <div class="subtitle">이제 제단은 단순한 동심원 장치가 아니라, 접힌 날개와 감긴 눈꺼풀 아래서 막 깨어나려는 `일식의 심장사제`다. 빛은 위에서 떨어지지만, 존재는 아래에서 그것을 받아 올리며 몸을 펴고, 마지막 점화자는 그 깨어남을 완성한다.</div>
+          <div class="pillbar">
+            <div class="pill">Character Awakening</div>
+            <div class="pill">Head / Chest / Wings</div>
+            <div class="pill">Breathing Aura</div>
+            <div class="pill">Asymmetric Unsealing</div>
+          </div>
+        </div>
+        <div class="hook">The dawnheart is opening its eye at last.</div>
+        <div class="caption">Character Arc<br/>Bound Heart / Eclipse / Awakening</div>
+        <svg class="scene" viewBox="0 0 1600 700" aria-hidden="true">
+          <defs>
+            <radialGradient id="dawnCore" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#fff9e6" />
+              <stop offset="62%" stop-color="#ffe188" />
+              <stop offset="100%" stop-color="#ffba52" />
+            </radialGradient>
+            <linearGradient id="lightShaft" x1="0" x2="0" y1="0" y2="1">
+              <stop offset="0%" stop-color="#fff5d2" />
+              <stop offset="100%" stop-color="#ffcf5b" />
+            </linearGradient>
+          </defs>
+
+          <circle cx="1024" cy="142" r="142" fill="#f7cf61"/>
+          <path d="M930 78 C978 38, 1082 28, 1144 62 C1170 76, 1188 92, 1204 122
+                   C1194 114, 1178 108, 1158 104 C1098 92, 1006 98, 950 124 C938 128, 930 132, 922 138 Z"
+                fill="#0c0814"/>
+          <circle cx="1024" cy="142" r="110" fill="#0d0916"/>
+          <path d="M890 102 C936 44, 1120 34, 1172 106" stroke="#ffe5a6" stroke-width="3" fill="none" opacity=".55"/>
+          <path d="M926 244 C958 212, 1092 204, 1124 236" stroke="#6e5490" stroke-width="3" fill="none" opacity=".45"/>
+
+          <path d="M1024 252 C1002 306, 998 342, 1008 394" stroke="url(#lightShaft)" stroke-width="12" stroke-linecap="round"/>
+          <path d="M1032 248 C1050 300, 1052 342, 1044 394" stroke="url(#lightShaft)" stroke-width="8" stroke-linecap="round" opacity=".7"/>
+
+          <path d="M944 346 C956 302, 988 282, 1028 280 C1070 278, 1108 298, 1120 344
+                   C1128 382, 1118 424, 1082 454 C1058 474, 1042 492, 1034 522
+                   C1008 500, 992 480, 970 456 C938 422, 932 384, 944 346 Z"
+                fill="#21162e" stroke="#9d78c7" stroke-width="7"/>
+          <path d="M990 314 C1006 300, 1040 298, 1058 312" stroke="#6d5490" stroke-width="16" stroke-linecap="round"/>
+          <ellipse cx="1026" cy="360" rx="58" ry="68" fill="#160f21" stroke="#b48add" stroke-width="8"/>
+          <path d="M1000 360 C1008 344, 1038 344, 1046 360 C1038 378, 1008 378, 1000 360 Z"
+                fill="url(#dawnCore)"/>
+          <path d="M1024 328 C1042 356, 1044 406, 1024 438 C1004 406, 1006 356, 1024 328 Z"
+                fill="#fff6da" opacity=".92"/>
+
+          <path d="M930 354 C882 362, 836 390, 806 444 C850 434, 888 434, 936 452" fill="none" stroke="#745993" stroke-width="10" stroke-linecap="round"/>
+          <path d="M1118 350 C1166 358, 1212 390, 1244 448 C1200 436, 1160 436, 1110 454" fill="none" stroke="#745993" stroke-width="10" stroke-linecap="round"/>
+          <path d="M942 388 C908 408, 886 434, 878 470" fill="none" stroke="#8a6ab0" stroke-width="5" stroke-linecap="round"/>
+          <path d="M1104 388 C1140 408, 1164 436, 1172 474" fill="none" stroke="#8a6ab0" stroke-width="5" stroke-linecap="round"/>
+
+          <path d="M986 286 C1002 264, 1042 260, 1064 278" stroke="#ffd971" stroke-width="6" stroke-linecap="round"/>
+          <path d="M960 432 C986 458, 1026 470, 1068 456" stroke="#ffd971" stroke-width="5" stroke-linecap="round"/>
+
+          <path d="M968 520 C992 550, 1058 550, 1082 520" stroke="#6d5490" stroke-width="16" stroke-linecap="round"/>
+          <rect x="946" y="524" width="158" height="90" rx="28" fill="#1f142a" stroke="#9a73c2" stroke-width="7"/>
+          <path d="M1026 530 C990 552, 980 604, 1026 616 C1072 604, 1062 552, 1026 530 Z" fill="url(#dawnCore)" stroke="#fff0bf" stroke-width="7"/>
+          <path d="M1026 544 C1014 560, 1012 586, 1026 600 C1040 586, 1038 560, 1026 544 Z" fill="#fff8e8" opacity=".95"/>
+
+          <ellipse cx="1026" cy="628" rx="130" ry="24" fill="#31183a" opacity=".45"/>
+          <rect x="918" y="594" width="216" height="24" rx="999" fill="#ffe08c"/>
+          <rect x="934" y="600" width="184" height="10" rx="999" fill="#fff4c7"/>
+
+          <path d="M1196 120 L1248 86" stroke="#3d294e" stroke-width="6" stroke-linecap="round"/>
+          <path d="M846 132 L800 168" stroke="#3d294e" stroke-width="6" stroke-linecap="round"/>
+          <path d="M1172 86 L1202 38" stroke="#3d294e" stroke-width="4" stroke-linecap="round"/>
+        </svg>
+      </section>
+    </div>
+  </div>
+</body>
+</html>

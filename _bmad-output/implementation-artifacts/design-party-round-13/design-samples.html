@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Breakout Reborn - Design Party Round 13</title>
+  <style>
+    :root { --ink:#f6f8fd; --line:rgba(255,255,255,.05); --panel:rgba(8,12,20,.80); }
+    * { box-sizing:border-box; }
+    body {
+      margin:0; color:var(--ink);
+      font-family:"Segoe UI","Noto Sans KR",sans-serif;
+      background:
+        radial-gradient(circle at 50% 0%, rgba(116,139,220,.08), transparent 20%),
+        linear-gradient(180deg,#04070d 0%,#08101c 100%);
+    }
+    .page { width:1600px; margin:0 auto; padding:24px; }
+    .intro {
+      display:grid; grid-template-columns:1.35fr .85fr; gap:24px;
+      padding:28px; border-radius:30px; background:var(--panel);
+      border:1px solid var(--line); margin-bottom:22px; backdrop-filter:blur(10px);
+    }
+    .eyebrow { color:#95c7ff; font-size:12px; letter-spacing:.18em; text-transform:uppercase; }
+    h1 { margin:12px 0; font-size:34px; line-height:1.08; letter-spacing:-.03em; }
+    .intro p, .notes { color:#cad4e7; line-height:1.75; font-size:15px; }
+    .notes { font-size:13px; }
+    .stack { display:grid; gap:22px; }
+    .sample {
+      position:relative; min-height:900px; overflow:hidden; border-radius:34px;
+      border:1px solid rgba(255,255,255,.06); padding:34px;
+    }
+    .sample h2 { margin:8px 0 10px; font-size:43px; line-height:1.03; max-width:730px; letter-spacing:-.03em; }
+    .subtitle { max-width:610px; color:#e1e7f3; font-size:17px; line-height:1.78; }
+    .tag { position:absolute; left:34px; top:30px; color:rgba(255,255,255,.72); font-size:12px; letter-spacing:.15em; text-transform:uppercase; }
+    .status { position:absolute; right:30px; top:30px; padding:11px 15px; border-radius:18px; font-size:12px; font-weight:700; letter-spacing:.09em; backdrop-filter:blur(10px); }
+    .hook { position:absolute; left:34px; bottom:40px; max-width:760px; font-size:30px; line-height:1.16; font-weight:800; letter-spacing:-.03em; text-shadow:0 14px 36px rgba(0,0,0,.62); }
+    .caption { position:absolute; right:34px; bottom:34px; text-align:right; color:#dde6f3; font-size:12px; line-height:1.7; text-transform:uppercase; letter-spacing:.12em; }
+    .sample-a {
+      background:
+        radial-gradient(circle at 74% 18%, rgba(255,168,108,.18), transparent 18%),
+        linear-gradient(180deg,#0d0f15 0%,#141016 48%,#08080d 100%);
+    }
+    .sample-b {
+      background:
+        radial-gradient(circle at 50% 12%, rgba(255,223,129,.22), transparent 16%),
+        linear-gradient(180deg,#100e19 0%,#151127 48%,#07070f 100%);
+    }
+    svg.scene { position:absolute; inset:0; width:100%; height:100%; }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <section class="intro">
+      <div>
+        <div class="eyebrow">Breakout Reborn / Design Party Round 13</div>
+        <h1>브러시 질감과 노이즈를 더 밀어 넣은 손그림 풍 콘셉트아트 접근</h1>
+        <p>이번 라운드는 형태를 깔끔하게 닫지 않고, 표면 질감과 안개와 빛 번짐 속에서 덩어리가 드러나도록 설계했습니다. 정리된 UI 포스터보다는 아트북에 실린 콘셉트 샷처럼 보이도록, 화면 가장자리와 경계를 더 흐리고 환경과 존재가 서로 섞여 읽히게 만들었습니다.</p>
+      </div>
+      <div class="notes">
+        <div class="eyebrow" style="margin-bottom:8px">Sketch Rules</div>
+        <div>1. 덩어리는 선보다 공기층과 명암으로 읽힌다</div>
+        <div>2. 기하학적 대칭보다 붕괴와 치우침을 우선한다</div>
+        <div>3. 광원은 점이 아니라 퍼지는 현상처럼 다룬다</div>
+        <div>4. 캐릭터와 풍경은 분리된 요소가 아니라 한 장면 안에서 섞인다</div>
+      </div>
+    </section>
+
+    <div class="stack">
+      <section class="sample sample-a">
+        <div class="tag">Round 13 / Smoke Beast Painting</div>
+        <div class="status" style="background:rgba(255,150,103,.12);border:1px solid rgba(255,188,147,.20);color:#ffcc9f">SKETCH SIEGE</div>
+        <div style="padding-top:26px">
+          <div class="eyebrow" style="color:#ffc58d">Heart Gate Siege / Hand-painted Fortress Beast</div>
+          <h2>Let the Warden Appear Like a Beast Buried in the Citadel</h2>
+          <div class="subtitle">이 버전에서는 수문장을 완전한 중심 캐릭터로 세우지 않고, 붕괴하는 성채 입구와 연기층 속에 박혀 있는 금속 짐승처럼 처리했습니다. 얼굴과 코어는 화염과 먼지 속에서 반쯤 드러나고, 전경의 광탄 궤적과 문 파편이 충돌 순간의 사건감을 끌어올립니다.</div>
+        </div>
+        <div class="hook">This should feel like the enemy is emerging from the ruin itself.</div>
+        <div class="caption">Sketch Tone<br/>Ruin / Smoke / Collision</div>
+        <svg class="scene" viewBox="0 0 1600 900">
+          <defs>
+            <filter id="noiseA" x="-20%" y="-20%" width="140%" height="140%">
+              <feTurbulence type="fractalNoise" baseFrequency="0.012" numOctaves="2" seed="8" result="n"/>
+              <feColorMatrix type="saturate" values="0"/>
+              <feComponentTransfer>
+                <feFuncA type="table" tableValues="0 0.04"/>
+              </feComponentTransfer>
+            </filter>
+            <filter id="blur56"><feGaussianBlur stdDeviation="56"/></filter>
+            <filter id="blur28"><feGaussianBlur stdDeviation="28"/></filter>
+            <filter id="blur14"><feGaussianBlur stdDeviation="14"/></filter>
+            <filter id="shadowA" x="-30%" y="-30%" width="180%" height="180%">
+              <feDropShadow dx="0" dy="36" stdDeviation="34" flood-color="#000" flood-opacity=".58"/>
+            </filter>
+            <radialGradient id="heatA" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#fff8dd"/>
+              <stop offset="44%" stop-color="#ffd69b"/>
+              <stop offset="100%" stop-color="#ff7946"/>
+            </radialGradient>
+            <linearGradient id="steelA" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#5c6876"/>
+              <stop offset="50%" stop-color="#2a333d"/>
+              <stop offset="100%" stop-color="#101720"/>
+            </linearGradient>
+          </defs>
+
+          <ellipse cx="1180" cy="736" rx="360" ry="112" fill="#000" opacity=".28" filter="url(#blur56)"/>
+          <path d="M980 840 C1068 666, 1120 530, 1144 380 C1174 202, 1266 92, 1460 48 L1600 48 L1600 900 L980 900 Z" fill="#151018"/>
+          <path d="M1108 866 C1180 704, 1232 566, 1258 420 C1280 292, 1342 178, 1476 96 L1600 96 L1600 900 L1126 900 Z" fill="#29161a" opacity=".88"/>
+
+          <path d="M930 742 C1070 632, 1202 444, 1454 224" stroke="#3d251b" stroke-width="148" stroke-linecap="round" opacity=".34" filter="url(#blur56)"/>
+          <path d="M1078 730 C1200 646, 1328 534, 1552 342" stroke="#7e3d2b" stroke-width="58" stroke-linecap="round" opacity=".26" filter="url(#blur28)"/>
+
+          <ellipse cx="1290" cy="404" rx="320" ry="204" fill="#2d1816" opacity=".28" filter="url(#blur56)"/>
+          <path d="M1220 210 C1340 170, 1450 188, 1530 260" stroke="#a25a40" stroke-width="18" stroke-linecap="round" opacity=".22" filter="url(#blur14)"/>
+
+          <g filter="url(#shadowA)">
+            <path d="M1014 618
+                     C986 540, 992 450, 1032 372
+                     C1082 274, 1180 218, 1282 206
+                     C1388 194, 1480 230, 1548 308
+                     C1600 370, 1600 474, 1568 566
+                     C1538 650, 1468 724, 1362 770
+                     C1260 814, 1144 796, 1062 734
+                     C1034 712, 1020 674, 1014 618 Z"
+                  fill="url(#steelA)"/>
+
+            <path d="M1088 430
+                     C1134 352, 1228 306, 1336 304
+                     C1456 302, 1544 352, 1586 430
+                     C1508 456, 1422 470, 1326 468
+                     C1232 466, 1150 454, 1088 430 Z"
+                  fill="#131920"/>
+
+            <path d="M1126 566
+                     C1174 486, 1238 446, 1318 440
+                     C1426 432, 1528 484, 1584 566
+                     C1540 648, 1466 710, 1380 742
+                     C1284 778, 1186 766, 1118 708
+                     C1074 670, 1046 624, 1034 578
+                     C1062 578, 1092 574, 1126 566 Z"
+                  fill="#171d24"/>
+
+            <ellipse cx="1182" cy="418" rx="46" ry="30" fill="url(#heatA)"/>
+            <ellipse cx="1418" cy="424" rx="48" ry="30" fill="url(#heatA)"/>
+            <ellipse cx="1182" cy="418" rx="144" ry="82" fill="#ff9c69" opacity=".18" filter="url(#blur28)"/>
+            <ellipse cx="1418" cy="424" rx="144" ry="82" fill="#ff9c69" opacity=".18" filter="url(#blur28)"/>
+
+            <ellipse cx="1302" cy="588" rx="112" ry="156" fill="url(#heatA)"/>
+            <ellipse cx="1302" cy="588" rx="190" ry="260" fill="#ffc28b" opacity=".14" filter="url(#blur28)"/>
+
+            <path d="M1008 566 C934 626, 840 662, 718 672 C758 550, 818 456, 900 390 C954 346, 1010 322, 1072 316 C1076 418, 1062 500, 1008 566 Z" fill="#2d3741" opacity=".92"/>
+            <path d="M1548 572 C1600 604, 1600 616, 1600 622 C1600 512, 1582 424, 1546 366 C1512 312, 1466 280, 1408 268 C1398 366, 1428 486, 1548 572 Z" fill="#2e3944" opacity=".88"/>
+          </g>
+
+          <path d="M278 760 C396 706, 514 626, 672 468" stroke="#98ecff" stroke-width="16" stroke-linecap="round"/>
+          <path d="M278 760 C402 702, 530 622, 690 454" stroke="#d4fbff" stroke-width="5" stroke-linecap="round"/>
+          <circle cx="284" cy="760" r="30" fill="#fff8df"/>
+          <ellipse cx="284" cy="760" rx="78" ry="44" fill="#90eaff" opacity=".16" filter="url(#blur28)"/>
+          <path d="M708 470 L798 440 L770 526 Z" fill="#f4b06c" opacity=".76"/>
+          <path d="M812 424 L896 398 L880 462 Z" fill="#d98657" opacity=".58"/>
+          <path d="M916 394 L984 372 L972 430 Z" fill="#bb6a47" opacity=".42"/>
+
+          <rect x="0" y="0" width="1600" height="900" filter="url(#noiseA)" opacity=".7"/>
+        </svg>
+      </section>
+
+      <section class="sample sample-b">
+        <div class="tag">Round 13 / Mythic Shrine Painting</div>
+        <div class="status" style="background:rgba(255,221,140,.10);border:1px solid rgba(255,228,164,.20);color:#ffe8aa">SKETCH ECLIPSE</div>
+        <div style="padding-top:26px">
+          <div class="eyebrow" style="color:#ffe6a5">Last Eclipse / Hand-painted Dawnheart</div>
+          <h2>Let the Dawnheart Wake Like a Weather Event Over Ancient Ruins</h2>
+          <div class="subtitle">이 버전은 중심 상징을 더 줄이고, 절벽과 성소와 하늘과 안개가 함께 반응하는 풍경으로 재구성했습니다. 심장 존재는 풍경 한가운데서 숨을 되찾고, 빛은 직선 장치가 아니라 공기 속에서 퍼지는 현상처럼 다뤄져 조금 더 손그림 풍 장면으로 읽히게 합니다.</div>
+        </div>
+        <div class="hook">This should feel like dawn is returning to the world, not just to the object.</div>
+        <div class="caption">Sketch Tone<br/>Mist / Shrine / Dawn</div>
+        <svg class="scene" viewBox="0 0 1600 900">
+          <defs>
+            <filter id="noiseB" x="-20%" y="-20%" width="140%" height="140%">
+              <feTurbulence type="fractalNoise" baseFrequency="0.01" numOctaves="2" seed="12" result="n"/>
+              <feColorMatrix type="saturate" values="0"/>
+              <feComponentTransfer>
+                <feFuncA type="table" tableValues="0 0.035"/>
+              </feComponentTransfer>
+            </filter>
+            <filter id="blurB56"><feGaussianBlur stdDeviation="56"/></filter>
+            <filter id="blurB28"><feGaussianBlur stdDeviation="28"/></filter>
+            <filter id="blurB14"><feGaussianBlur stdDeviation="14"/></filter>
+            <filter id="shadowB" x="-30%" y="-30%" width="180%" height="180%">
+              <feDropShadow dx="0" dy="36" stdDeviation="34" flood-color="#000" flood-opacity=".58"/>
+            </filter>
+            <radialGradient id="heartB" cx="50%" cy="50%" r="52%">
+              <stop offset="0%" stop-color="#fff9df"/>
+              <stop offset="44%" stop-color="#ffe4aa"/>
+              <stop offset="100%" stop-color="#ffb86d"/>
+            </radialGradient>
+            <linearGradient id="wingB" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#686aa8"/>
+              <stop offset="55%" stop-color="#37355f"/>
+              <stop offset="100%" stop-color="#181731"/>
+            </linearGradient>
+          </defs>
+
+          <circle cx="800" cy="116" r="186" fill="#f5d96f"/>
+          <circle cx="800" cy="116" r="134" fill="#080710"/>
+          <ellipse cx="800" cy="128" rx="210" ry="48" fill="#fff2c7" opacity=".08" filter="url(#blurB56)"/>
+
+          <path d="M74 900 C196 754, 338 672, 512 636 C626 612, 706 548, 754 430 L816 430 C774 566, 764 704, 784 900 Z" fill="#17132b"/>
+          <path d="M1526 900 C1404 754, 1262 672, 1088 636 C974 612, 894 548, 846 430 L784 430 C826 566, 836 704, 816 900 Z" fill="#17132b"/>
+          <ellipse cx="800" cy="754" rx="380" ry="104" fill="#000" opacity=".28" filter="url(#blurB56)"/>
+          <ellipse cx="800" cy="630" rx="290" ry="154" fill="#ffd38b" opacity=".12" filter="url(#blurB56)"/>
+          <path d="M800 220 C812 396, 808 576, 800 812" stroke="#fff3c9" stroke-width="4" opacity=".58"/>
+          <path d="M800 232 C806 410, 804 602, 800 820" stroke="#ffde8b" stroke-width="20" opacity=".14" filter="url(#blurB28)"/>
+
+          <g filter="url(#shadowB)">
+            <path d="M654 658
+                     C684 586, 728 530, 774 486
+                     C794 468, 800 452, 800 438
+                     C800 452, 806 468, 826 486
+                     C872 530, 916 586, 946 658
+                     C922 704, 886 744, 840 772
+                     C824 782, 812 788, 800 792
+                     C788 788, 776 782, 760 772
+                     C714 744, 678 704, 654 658 Z"
+                  fill="#17142a"/>
+
+            <path d="M710 624
+                     C734 562, 764 516, 798 486
+                     C836 514, 866 560, 890 624
+                     C868 668, 840 702, 808 726
+                     C804 730, 802 732, 800 734
+                     C798 732, 796 730, 792 726
+                     C760 702, 732 668, 710 624 Z"
+                  fill="#29214b"/>
+
+            <ellipse cx="800" cy="622" rx="76" ry="124" fill="url(#heartB)"/>
+            <ellipse cx="800" cy="622" rx="164" ry="234" fill="#ffd694" opacity=".16" filter="url(#blurB28)"/>
+
+            <path d="M648 554 C596 514, 560 470, 546 416 C534 366, 546 324, 582 286 C620 246, 676 238, 734 258 C708 320, 700 372, 702 430 C704 486, 716 530, 734 570 C700 578, 672 576, 648 554 Z" fill="url(#wingB)" opacity=".90"/>
+            <path d="M952 554 C1004 514, 1040 470, 1054 416 C1066 366, 1054 324, 1018 286 C980 246, 924 238, 866 258 C892 320, 900 372, 898 430 C896 486, 884 530, 866 570 C900 578, 928 576, 952 554 Z" fill="url(#wingB)" opacity=".90"/>
+          </g>
+
+          <ellipse cx="804" cy="838" rx="196" ry="58" fill="#ffe09a" opacity=".10" filter="url(#blurB28)"/>
+          <ellipse cx="610" cy="734" rx="78" ry="24" fill="#655889" opacity=".28" filter="url(#blurB14)"/>
+          <ellipse cx="1008" cy="706" rx="86" ry="28" fill="#655889" opacity=".26" filter="url(#blurB14)"/>
+          <ellipse cx="1118" cy="788" rx="52" ry="18" fill="#655889" opacity=".24" filter="url(#blurB14)"/>
+
+          <rect x="0" y="0" width="1600" height="900" filter="url(#noiseB)" opacity=".7"/>
+        </svg>
+      </section>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,512 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Breakout Reborn Round 4</title>
+  <style>
+    :root { color-scheme: dark; }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: radial-gradient(circle at top, #13243a 0%, #071018 60%, #03060a 100%);
+      color: #f7f8fb;
+      font-family: "Segoe UI", Arial, sans-serif;
+      padding: 32px 28px 40px;
+    }
+    .page { width: 1720px; margin: 0 auto; }
+    .intro {
+      padding: 20px 22px;
+      border-radius: 26px;
+      background: rgba(8, 14, 22, 0.82);
+      border: 1px solid rgba(255,255,255,0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+      margin-bottom: 24px;
+    }
+    .intro h1 { margin: 0 0 6px; font-size: 28px; }
+    .intro p { margin: 0; max-width: 980px; color: rgba(255,255,255,0.74); line-height: 1.45; font-size: 14px; }
+    .chips { display: flex; gap: 10px; flex-wrap: wrap; }
+    .chip {
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.12);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+    .stack { display: grid; gap: 28px; }
+    .sample {
+      min-height: 1000px;
+      border-radius: 36px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.12);
+      box-shadow: 0 34px 80px rgba(0,0,0,0.34);
+      position: relative;
+    }
+    .sample-inner {
+      min-height: 1000px;
+      display: grid;
+      grid-template-columns: 250px 1fr 250px;
+      gap: 24px;
+      padding: 28px;
+      position: relative;
+    }
+    .side, .playfield {
+      border-radius: 30px;
+      border: 1px solid rgba(255,255,255,0.1);
+      background: rgba(6, 11, 18, 0.46);
+      backdrop-filter: blur(10px);
+    }
+    .side {
+      padding: 22px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .eyebrow {
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.58);
+    }
+    .title {
+      margin: 0;
+      font-size: 40px;
+      line-height: 0.94;
+      letter-spacing: -0.05em;
+    }
+    .desc { color: rgba(255,255,255,0.76); font-size: 14px; line-height: 1.45; }
+    .metric {
+      padding: 14px;
+      border-radius: 18px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+    .metric strong {
+      display: block;
+      font-size: 10px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.56);
+      margin-bottom: 8px;
+    }
+    .metric span { display: block; font-size: 20px; font-weight: 800; }
+    .metric small { display: block; margin-top: 6px; color: rgba(255,255,255,0.62); font-size: 12px; }
+    .taglist { display: flex; flex-wrap: wrap; gap: 8px; }
+    .tag {
+      padding: 8px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.1);
+      background: rgba(255,255,255,0.04);
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.74);
+    }
+    .note { padding-top: 4px; color: rgba(255,255,255,0.66); line-height: 1.45; font-size: 13px; }
+    .playfield { position: relative; overflow: hidden; }
+    .hud {
+      position: relative;
+      z-index: 3;
+      display: grid;
+      grid-template-columns: 1.3fr 1fr 1fr 1fr;
+      gap: 14px;
+      padding: 22px 24px 12px;
+    }
+    .hud-card {
+      padding: 14px 16px;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,0.1);
+      background: rgba(5,10,18,0.45);
+    }
+    .hud-card strong {
+      display: block;
+      font-size: 10px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.54);
+      margin-bottom: 8px;
+    }
+    .hud-card span { display: block; font-size: 18px; font-weight: 800; line-height: 1.1; }
+    .hud-card small { display: block; margin-top: 6px; color: rgba(255,255,255,0.62); font-size: 12px; }
+    .arena { position: relative; min-height: 900px; padding: 16px 24px 24px; }
+    .brick-grid {
+      position: absolute;
+      top: 120px;
+      left: 120px;
+      right: 120px;
+      display: grid;
+      grid-template-columns: repeat(9, 1fr);
+      gap: 12px;
+      z-index: 2;
+    }
+    .brick {
+      height: 48px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.12);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.1);
+    }
+    .center {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: 144px;
+      width: 420px;
+      height: 420px;
+      z-index: 1;
+    }
+    .paddle {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: 72px;
+      width: 220px;
+      height: 28px;
+      border-radius: 999px;
+      z-index: 4;
+    }
+    .ball {
+      position: absolute;
+      left: 50%;
+      margin-left: -11px;
+      bottom: 120px;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      z-index: 5;
+      box-shadow: 0 0 24px currentColor;
+    }
+    .copy {
+      position: absolute;
+      left: 32px;
+      right: 32px;
+      bottom: 18px;
+      z-index: 5;
+      display: flex;
+      gap: 18px;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+    .copy h2 { margin: 0 0 8px; font-size: 38px; line-height: 0.98; letter-spacing: -0.05em; }
+    .copy p { margin: 0; max-width: 760px; color: rgba(255,255,255,0.74); line-height: 1.5; font-size: 15px; }
+    .copybox {
+      min-width: 220px;
+      padding: 12px 15px;
+      border-radius: 16px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.09);
+      color: rgba(255,255,255,0.8);
+      font-size: 12px;
+      line-height: 1.45;
+    }
+    .s1 { background: radial-gradient(circle at 50% 18%, rgba(124,191,255,0.16), transparent 30%), linear-gradient(180deg, #07111a, #0b1930 58%, #05090f); }
+    .s1 .brick { background: linear-gradient(180deg, #7598cb, #355277); }
+    .s1 .paddle { background: linear-gradient(90deg, #6fddff, #eafaff, #6fddff); box-shadow: 0 0 28px rgba(111,221,255,0.34); }
+    .s1 .ball { color: #f2fbff; background: #f2fbff; }
+    .s2 { background: radial-gradient(circle at 50% 16%, rgba(106,246,228,0.14), transparent 30%), linear-gradient(180deg, #041119, #0b2732 58%, #040c12); }
+    .s2 .brick { background: linear-gradient(180deg, #4c9ca2, #21505a); }
+    .s2 .paddle { background: linear-gradient(90deg, #70f8eb, #ecffff, #70f8eb); box-shadow: 0 0 28px rgba(112,248,235,0.32); }
+    .s2 .ball { color: #d7fffd; background: #d7fffd; }
+    .s3 { background: radial-gradient(circle at 50% 12%, rgba(255,196,112,0.12), transparent 26%), linear-gradient(180deg, #181108, #23170d 56%, #0a0705); }
+    .s3 .brick { background: linear-gradient(180deg, #a07047, #56351e); }
+    .s3 .paddle { background: linear-gradient(90deg, #ffcf83, #fff0d3, #ffcf83); box-shadow: 0 0 28px rgba(255,207,131,0.3); }
+    .s3 .ball { color: #ffe6b6; background: #ffe6b6; }
+    .s4 { background: radial-gradient(circle at 50% 14%, rgba(255,122,92,0.12), transparent 28%), linear-gradient(180deg, #120c0b, #1d1210 56%, #080506); }
+    .s4 .brick { background: linear-gradient(180deg, #77504c, #3b2625); }
+    .s4 .paddle { background: linear-gradient(90deg, #ff9478, #ffe4db, #ff9478); box-shadow: 0 0 28px rgba(255,148,120,0.3); }
+    .s4 .ball { color: #ffe6df; background: #ffe6df; }
+    .s5 { background: radial-gradient(circle at 50% 12%, rgba(251,212,110,0.18), transparent 28%), linear-gradient(180deg, #120d18, #1c1428 58%, #08060b); }
+    .s5 .brick { background: linear-gradient(180deg, #846753, #49362b); }
+    .s5 .paddle { background: linear-gradient(90deg, #f4d078, #fff5d1, #f4d078); box-shadow: 0 0 28px rgba(244,208,120,0.32); }
+    .s5 .ball { color: #fff1bd; background: #fff1bd; }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <section class="intro">
+      <div>
+        <h1>Breakout Reborn · Theme Foundation Round 4</h1>
+        <p>이번 라운드는 바로 더 예쁜 화면을 만드는 대신, 유저가 왜 눌러보고 싶은지 설명하는 세 가지 코어 판타지에서 다시 시작했다. 구원, 돌파, 각성의 세 축을 기준으로 새 5안을 다시 설계했다.</p>
+      </div>
+      <div class="chips">
+        <div class="chip">Rescue the World</div>
+        <div class="chip">Break the Impossible</div>
+        <div class="chip">Awaken the Core</div>
+      </div>
+    </section>
+
+    <div class="stack">
+      <section class="sample s1" id="sample-1">
+        <div class="sample-inner">
+          <aside class="side">
+            <div class="eyebrow">Theme 01 · Rescue</div>
+            <h1 class="title">Orbital Lifeline Array</h1>
+            <div class="desc">붕괴하는 궤도 생명선 어레이를 복구해 정거장 전체에 다시 숨을 불어넣는 구조 임무.</div>
+            <div class="metric"><strong>Player Fantasy</strong><span>Emergency Restorer</span><small>무너지는 세계를 마지막 순간에 붙잡는 복구자</small></div>
+            <div class="metric"><strong>Core Verb</strong><span>Repair the orbit</span><small>브릭을 제거할수록 비콘과 생명선이 점등된다</small></div>
+            <div class="taglist"><div class="tag">Modules</div><div class="tag">Beacon</div><div class="tag">Stability</div><div class="tag">Reignite</div></div>
+          </aside>
+          <main class="playfield">
+            <div class="hud">
+              <div class="hud-card"><strong>Mission</strong><span>Reconnect the lifeline array</span><small>남은 패널 18개를 복구하면 도킹 통로가 열린다</small></div>
+              <div class="hud-card"><strong>Orbit Status</strong><span>41%</span><small>정거장 회전 안정도 상승 중</small></div>
+              <div class="hud-card"><strong>Life Support</strong><span>2 Systems Left</span><small>방전 모듈 두 개가 남아 있다</small></div>
+              <div class="hud-card"><strong>Reward</strong><span>Beacon Relight</span><small>클리어 시 구조 빛이 궤도를 다시 돈다</small></div>
+            </div>
+            <div class="arena">
+              <div class="brick-grid">
+                <div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div>
+                <div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div>
+                <div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div>
+              </div>
+              <div class="center">
+                <svg viewBox="0 0 420 420" width="420" height="420">
+                  <circle cx="210" cy="140" r="108" fill="rgba(140,210,255,0.15)"/>
+                  <rect x="170" y="78" width="80" height="210" rx="40" fill="#7da8dd"/>
+                  <rect x="154" y="98" width="112" height="172" rx="54" fill="#a7c5e9" opacity="0.88"/>
+                  <rect x="184" y="48" width="52" height="276" rx="26" fill="#e6f2ff" opacity="0.72"/>
+                  <path d="M94 150c30-42 74-68 116-68s86 26 116 68" fill="none" stroke="#a5e6ff" stroke-width="8" opacity="0.65"/>
+                  <path d="M76 172c34 52 81 82 134 82s100-30 134-82" fill="none" stroke="#8fd7ff" stroke-width="6" opacity="0.32"/>
+                  <circle cx="210" cy="142" r="24" fill="#f2fbff"/>
+                </svg>
+              </div>
+              <div class="paddle"></div>
+              <div class="ball"></div>
+              <div class="copy">
+                <div>
+                  <h2>You are not farming score.<br />You are restoring a dying orbit.</h2>
+                  <p>모든 타격은 고장 난 셔터를 걷어내고, 끊어진 생명선에 다시 전력을 흐르게 한다. 이 판을 끝내면 정거장은 다시 사람을 살릴 수 있다.</p>
+                </div>
+                <div class="copybox">브릭 = 방전 셔터<br />패들 = 자기장 복구 레일<br />볼 = 구조 펄스</div>
+              </div>
+            </div>
+          </main>
+          <aside class="side">
+            <div class="eyebrow">Why this works</div>
+            <div class="note">중앙 비콘이 명확한 목표 오브젝트다. 브릭을 제거할수록 저 비콘이 살아난다는 관계가 한눈에 보인다.</div>
+            <div class="metric"><strong>Visible Stake</strong><span>Collapse vs Recovery</span><small>구조하지 않으면 궤도 생명선이 끊긴다</small></div>
+            <div class="metric"><strong>User Hook</strong><span>Save the station</span><small>단순 파괴보다 구조 판타지가 먼저 읽힌다</small></div>
+          </aside>
+        </div>
+      </section>
+
+      <section class="sample s2" id="sample-2">
+        <div class="sample-inner">
+          <aside class="side">
+            <div class="eyebrow">Theme 01 · Rescue</div>
+            <h1 class="title">Abyss City Shield</h1>
+            <div class="desc">심해 도시를 지키는 압력 돔이 무너지고 있다. 균열 셀을 모두 제거해 방벽을 다시 닫아야 한다.</div>
+            <div class="metric"><strong>Player Fantasy</strong><span>Deep-Sea Protector</span><small>도시 전체를 바다 압력에서 구하는 마지막 방어자</small></div>
+            <div class="metric"><strong>Core Verb</strong><span>Seal the dome</span><small>브릭을 끊을수록 균열선이 꺼지고 보호막이 맑아진다</small></div>
+            <div class="taglist"><div class="tag">Pressure</div><div class="tag">Seal</div><div class="tag">Survival</div><div class="tag">Containment</div></div>
+          </aside>
+          <main class="playfield">
+            <div class="hud">
+              <div class="hud-card"><strong>Mission</strong><span>Stabilize the abyss dome</span><small>균열 노드 14개를 막으면 도시는 침수되지 않는다</small></div>
+              <div class="hud-card"><strong>Pressure</strong><span>83 bar</span><small>즉시 봉합이 필요하다</small></div>
+              <div class="hud-card"><strong>Seal Progress</strong><span>56%</span><small>방벽이 다시 맑아지고 있다</small></div>
+              <div class="hud-card"><strong>Reward</strong><span>City Lights Return</span><small>클리어 시 심해 도시가 다시 켜진다</small></div>
+            </div>
+            <div class="arena">
+              <div class="brick-grid">
+                <div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div>
+                <div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div>
+                <div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div>
+              </div>
+              <div class="center">
+                <svg viewBox="0 0 420 420" width="420" height="420">
+                  <circle cx="210" cy="134" r="112" fill="rgba(108,240,226,0.14)"/>
+                  <path d="M86 300c0-84 56-170 124-170s124 86 124 170" fill="#67d6d7" opacity="0.56"/>
+                  <path d="M112 300c0-66 44-126 98-126s98 60 98 126" fill="#abfffb" opacity="0.36"/>
+                  <path d="M84 300h252" stroke="#e6ffff" stroke-width="6" opacity="0.48"/>
+                  <path d="M188 162l10 28-15 22 23 28-12 30" fill="none" stroke="#efffff" stroke-width="5" opacity="0.78"/>
+                  <path d="M236 154l-12 26 16 25-20 27 13 33" fill="none" stroke="#efffff" stroke-width="4" opacity="0.56"/>
+                  <circle cx="210" cy="208" r="24" fill="#f3ffff"/>
+                </svg>
+              </div>
+              <div class="paddle"></div>
+              <div class="ball"></div>
+              <div class="copy">
+                <div>
+                  <h2>The dome is cracking.<br />The city is waiting for your next rebound.</h2>
+                  <p>심해의 어둠은 이미 도시를 누르고 있다. 이 판에서 튕기는 공은 점수를 위한 공이 아니라, 도시를 살리는 봉합 드론이다.</p>
+                </div>
+                <div class="copybox">브릭 = 균열 셀<br />패들 = 소나 쉴드 레일<br />볼 = 봉합 드론</div>
+              </div>
+            </div>
+          </main>
+          <aside class="side">
+            <div class="eyebrow">Why this works</div>
+            <div class="note">화면만 보고도 “무너지기 전에 막아야 한다”는 위기가 읽힌다. 도시를 구한다는 스테이크가 직접적이다.</div>
+            <div class="metric"><strong>Visible Stake</strong><span>City flooding risk</span><small>클리어 실패가 곧 도시 침수로 연결된다</small></div>
+            <div class="metric"><strong>User Hook</strong><span>Seal before collapse</span><small>생존형 긴장감이 강하다</small></div>
+          </aside>
+        </div>
+      </section>
+
+      <section class="sample s3" id="sample-3">
+        <div class="sample-inner">
+          <aside class="side">
+            <div class="eyebrow">Theme 02 · Breach</div>
+            <h1 class="title">Iron Bastion Gatebreak</h1>
+            <div class="desc">철의 요새는 겹겹의 문과 방패벽으로 보호되고 있다. 최종 관문을 돌파해 안쪽 심장실에 닿아야 한다.</div>
+            <div class="metric"><strong>Player Fantasy</strong><span>Siege Specialist</span><small>불가능한 장벽을 결국 무너뜨리는 돌파자</small></div>
+            <div class="metric"><strong>Core Verb</strong><span>Crack the gate</span><small>층이 벗겨질수록 중심 문장이 실제로 금이 간다</small></div>
+            <div class="taglist"><div class="tag">Armor</div><div class="tag">Impact</div><div class="tag">Breach</div><div class="tag">Core Hit</div></div>
+          </aside>
+          <main class="playfield">
+            <div class="hud">
+              <div class="hud-card"><strong>Mission</strong><span>Breach the iron bastion</span><small>게이트 층 3개를 벗기면 코어 문이 열린다</small></div>
+              <div class="hud-card"><strong>Gate HP</strong><span>3 Layers</span><small>외벽, 방패벽, 핵심 관문</small></div>
+              <div class="hud-card"><strong>Breach Meter</strong><span>67%</span><small>최종 균열선이 드러나고 있다</small></div>
+              <div class="hud-card"><strong>Reward</strong><span>Inner Chamber</span><small>클리어 시 요새 심장실이 노출된다</small></div>
+            </div>
+            <div class="arena">
+              <div class="brick-grid">
+                <div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div>
+                <div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div>
+                <div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div>
+              </div>
+              <div class="center">
+                <svg viewBox="0 0 420 420" width="420" height="420">
+                  <rect x="118" y="94" width="184" height="216" fill="#5d3b25" opacity="0.88"/>
+                  <rect x="136" y="116" width="148" height="178" fill="#8b5a34" opacity="0.96"/>
+                  <rect x="164" y="144" width="92" height="138" fill="#c08a4f" opacity="0.88"/>
+                  <path d="M210 146v134M164 214h92" stroke="#f7d49c" stroke-width="7" opacity="0.54"/>
+                  <path d="M210 140l-14 38 21 28-24 28 17 42" fill="none" stroke="#fff4d7" stroke-width="5" opacity="0.76"/>
+                  <circle cx="210" cy="214" r="112" fill="rgba(255,191,102,0.12)"/>
+                </svg>
+              </div>
+              <div class="paddle"></div>
+              <div class="ball"></div>
+              <div class="copy">
+                <div>
+                  <h2>Every hit matters because<br />the fortress is actually falling.</h2>
+                  <p>겹겹의 장갑을 벗겨낼수록 중심 문이 드러난다. 이 안은 ‘블록 깨기’가 아니라, 진짜 관문 돌파의 쾌감을 전면에 둔다.</p>
+                </div>
+                <div class="copybox">브릭 = 장갑층<br />패들 = 공성 발사대<br />볼 = 브리치 코어</div>
+              </div>
+            </div>
+          </main>
+          <aside class="side">
+            <div class="eyebrow">Why this works</div>
+            <div class="note">장벽이 층층이 보이기 때문에 유저는 “안쪽에 뭐가 있는지”를 즉시 궁금해한다. 게임성이 가장 직접적이다.</div>
+            <div class="metric"><strong>Visible Stake</strong><span>Reach the heart room</span><small>중심에 닿는 순간 큰 보상이 있다는 기대를 만든다</small></div>
+            <div class="metric"><strong>User Hook</strong><span>Break the final gate</span><small>즉각적인 돌파 욕망이 강하다</small></div>
+          </aside>
+        </div>
+      </section>
+
+      <section class="sample s4" id="sample-4">
+        <div class="sample-inner">
+          <aside class="side">
+            <div class="eyebrow">Theme 02 · Breach</div>
+            <h1 class="title">Black Vault Overload</h1>
+            <div class="desc">검은 금고는 보안층이 너무 많아 안이 보이지도 않는다. 잠금 셀을 과부하시켜 핵심을 드러내야 한다.</div>
+            <div class="metric"><strong>Player Fantasy</strong><span>Overload Infiltrator</span><small>열 수 없는 금고를 규칙째 무너뜨리는 침투자</small></div>
+            <div class="metric"><strong>Core Verb</strong><span>Overload the locks</span><small>브릭이 사라질수록 중앙 링이 뜨겁게 달아오른다</small></div>
+            <div class="taglist"><div class="tag">Locks</div><div class="tag">Security</div><div class="tag">Alert</div><div class="tag">Core Reveal</div></div>
+          </aside>
+          <main class="playfield">
+            <div class="hud">
+              <div class="hud-card"><strong>Mission</strong><span>Overload the black vault</span><small>잠금 셀 16개를 과부하시켜 중심 링을 연다</small></div>
+              <div class="hud-card"><strong>Security</strong><span>Alert Tier 4</span><small>과부하가 커질수록 경보가 오른다</small></div>
+              <div class="hud-card"><strong>Lock Cells</strong><span>16 Remaining</span><small>외곽 방어층이 아직 버티는 중</small></div>
+              <div class="hud-card"><strong>Reward</strong><span>Core Exposure</span><small>클리어 시 내부 아카이브가 열린다</small></div>
+            </div>
+            <div class="arena">
+              <div class="brick-grid">
+                <div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div>
+                <div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div>
+                <div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div>
+              </div>
+              <div class="center">
+                <svg viewBox="0 0 420 420" width="420" height="420">
+                  <circle cx="210" cy="214" r="110" fill="#241a19" opacity="0.94"/>
+                  <circle cx="210" cy="214" r="84" fill="none" stroke="#7b5751" stroke-width="22"/>
+                  <circle cx="210" cy="214" r="58" fill="none" stroke="#ff9a82" stroke-width="14" opacity="0.78"/>
+                  <circle cx="210" cy="214" r="22" fill="#ffe4de"/>
+                  <path d="M210 92v34M210 302v34M88 214h34M298 214h34" stroke="#ffb7a5" stroke-width="7" opacity="0.56"/>
+                  <circle cx="210" cy="214" r="126" fill="rgba(255,122,92,0.12)"/>
+                </svg>
+              </div>
+              <div class="paddle"></div>
+              <div class="ball"></div>
+              <div class="copy">
+                <div>
+                  <h2>You are not clearing tiles.<br />You are forcing open the impossible.</h2>
+                  <p>잠금 셀이 하나씩 무너질수록 중심 링이 열을 품는다. 이 콘셉트는 구조보다 더 공격적인 침투 쾌감에 초점을 맞춘다.</p>
+                </div>
+                <div class="copybox">브릭 = 잠금 셀<br />패들 = 브리칭 레일<br />볼 = 과부하 펄스</div>
+              </div>
+            </div>
+          </main>
+          <aside class="side">
+            <div class="eyebrow">Why this works</div>
+            <div class="note">중앙 오브젝트가 금고임을 바로 읽을 수 있고, 잠금 해제와 과부하라는 현대적 긴장감이 명확하다.</div>
+            <div class="metric"><strong>Visible Stake</strong><span>What is inside?</span><small>안쪽 핵심이 궁금해지는 구조 자체가 훅이 된다</small></div>
+            <div class="metric"><strong>User Hook</strong><span>Force the lock open</span><small>공략 판타지가 매우 직접적이다</small></div>
+          </aside>
+        </div>
+      </section>
+
+      <section class="sample s5" id="sample-5">
+        <div class="sample-inner">
+          <aside class="side">
+            <div class="eyebrow">Theme 03 · Awaken</div>
+            <h1 class="title">Eclipse Heart Rite</h1>
+            <div class="desc">일식 아래 봉인된 심장이 잠들어 있다. 인장 조각을 모두 걷어내고 의식을 완성해 세계의 밤을 끝내야 한다.</div>
+            <div class="metric"><strong>Player Fantasy</strong><span>Chosen Awakener</span><small>금지된 힘을 깨우는 수행자이자 점화자</small></div>
+            <div class="metric"><strong>Core Verb</strong><span>Unseal the heart</span><small>브릭이 사라질수록 중심 광맥과 룬 원이 활성화된다</small></div>
+            <div class="taglist"><div class="tag">Runes</div><div class="tag">Rite</div><div class="tag">Awaken</div><div class="tag">Revelation</div></div>
+          </aside>
+          <main class="playfield">
+            <div class="hud">
+              <div class="hud-card"><strong>Mission</strong><span>Complete the eclipse rite</span><small>봉인 인장 12개가 사라지면 심장이 깨어난다</small></div>
+              <div class="hud-card"><strong>Awakening</strong><span>59%</span><small>중심광이 의식원과 연결되는 중</small></div>
+              <div class="hud-card"><strong>Seals Left</strong><span>12 Marks</span><small>가장 안쪽 봉인이 아직 남아 있다</small></div>
+              <div class="hud-card"><strong>Reward</strong><span>Night Ends</span><small>클리어 시 일식이 걷히고 태양 심장이 열린다</small></div>
+            </div>
+            <div class="arena">
+              <div class="brick-grid">
+                <div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div>
+                <div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div>
+                <div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div><div class="brick"></div>
+              </div>
+              <div class="center">
+                <svg viewBox="0 0 420 420" width="420" height="420">
+                  <circle cx="210" cy="128" r="108" fill="#2d2040"/>
+                  <circle cx="210" cy="128" r="94" fill="rgba(248,212,111,0.18)"/>
+                  <circle cx="210" cy="128" r="78" fill="#17111f"/>
+                  <circle cx="210" cy="232" r="112" fill="none" stroke="#7a6149" stroke-width="18" opacity="0.48"/>
+                  <circle cx="210" cy="232" r="74" fill="none" stroke="#f6d184" stroke-width="10" opacity="0.74"/>
+                  <path d="M210 168l15 30 33 5-24 22 6 33-30-16-30 16 6-33-24-22 33-5z" fill="#ffecb8" opacity="0.88"/>
+                </svg>
+              </div>
+              <div class="paddle"></div>
+              <div class="ball"></div>
+              <div class="copy">
+                <div>
+                  <h2>You are not scoring.<br />You are reopening the sun.</h2>
+                  <p>이 안의 보상은 높은 점수보다 더 크다. 마지막 봉인이 풀리는 순간, 일식이 걷히고 중심 심장이 빛을 뿜어낸다.</p>
+                </div>
+                <div class="copybox">브릭 = 봉인 인장<br />패들 = 의식 반사판<br />볼 = 각성 코어</div>
+              </div>
+            </div>
+          </main>
+          <aside class="side">
+            <div class="eyebrow">Why this works</div>
+            <div class="note">중심의 잠든 심장과 위의 일식 원반이 바로 서사를 만든다. 단순 파괴보다 각성이라는 목적이 선명하다.</div>
+            <div class="metric"><strong>Visible Stake</strong><span>Lift the eclipse</span><small>클리어가 곧 세계의 상태 변화를 의미한다</small></div>
+            <div class="metric"><strong>User Hook</strong><span>Awaken the heart</span><small>경외와 계시의 감정이 강하게 남는다</small></div>
+          </aside>
+        </div>
+      </section>
+    </div>
+  </div>
+</body>
+</html>
