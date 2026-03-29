@@ -1,7 +1,8 @@
 import { defineConfig } from "vite";
 
 export default defineConfig({
-  base: "./",
+  // base: "./",
+  base: '/Breakout_Reborn/', // GitHub Pages에서 사용할 경로
   server: {
     host: true,
     port: 4173,

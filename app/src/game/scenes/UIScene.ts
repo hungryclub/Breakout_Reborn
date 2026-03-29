@@ -1,18 +1,18 @@
 import Phaser from "phaser";
 
-import { TEXTURE_KEYS, UI_ICON_TEXTURE_KEYS } from "../config/assetKeys";
-import type { InputSensitivityPreset } from "../config/inputConfig";
-import { GAME_WIDTH } from "../config/gameConfig";
-import { STAGE_PRESENTATION_PROFILES } from "../config/presentationConfig";
-import { loadRuntimeSettings, saveRuntimeSettings, type RuntimeSettings } from "../config/settings";
-import { SceneKeys } from "../core/SceneKeys";
+import { TEXTURE_KEYS, UI_ICON_TEXTURE_KEYS } from "../config/assetKeys.ts";
+import type { InputSensitivityPreset } from "../config/inputConfig.ts";
+import { GAME_HEIGHT, GAME_WIDTH } from "../config/gameConfig.ts";
+import { STAGE_PRESENTATION_PROFILES } from "../config/presentationConfig.ts";
+import { loadRuntimeSettings, saveRuntimeSettings, type RuntimeSettings } from "../config/settings.ts";
+import { SceneKeys } from "../core/SceneKeys.ts";
 import {
   getComboPresentation,
   getFailureOverlayAlpha,
   getRewardCardAccentAlpha,
   getResultTransitionProfile,
-} from "../systems/presentationMath";
-import type { RewardChoice } from "../systems/rewardMath";
+} from "../systems/presentationMath.ts";
+import type { RewardChoice } from "../systems/rewardMath.ts";
 
 export class UIScene extends Phaser.Scene {
   private launchPrompt?: Phaser.GameObjects.Text;
@@ -92,7 +92,7 @@ export class UIScene extends Phaser.Scene {
       .setAlpha(0);
 
     this.powerupStateText = this.add
-      .text(GAME_WIDTH / 2, 1880, "", {
+      .text(GAME_WIDTH / 2, GAME_HEIGHT - 40, "", {
         color: "#cfdcf0",
         fontFamily: "Verdana",
         fontSize: "22px",
@@ -100,7 +100,7 @@ export class UIScene extends Phaser.Scene {
       .setOrigin(0.5);
 
     this.launchPrompt = this.add
-      .text(GAME_WIDTH / 2, 1730, "탭해서 시작", {
+      .text(GAME_WIDTH / 2, GAME_HEIGHT - 156, "탭해서 시작", {
         color: stageProfile.accentColor,
         fontFamily: "Verdana",
         fontSize: "42px",

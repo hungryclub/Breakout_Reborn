@@ -9,14 +9,17 @@
     "preview": "vite preview",
     "test": "node --test tests/input-system.test.ts tests/ball-system.test.ts tests/reflection-system.test.ts tests/brick-system.test.ts tests/combo-system.test.ts tests/powerup-system.test.ts tests/powerup-effect-system.test.ts tests/stage-system.test.ts tests/meta-system.test.ts tests/reward-system.test.ts tests/presentation-system.test.ts",
     "test:e2e": "playwright test",
+    "test:e2e:layout": "playwright test e2e/layout.spec.ts",
     "test:e2e:bot": "playwright test e2e/bot-play.spec.ts",
-    "test:e2e:headed": "playwright test --headed"
+    "test:e2e:headed": "playwright test --headed",
+    "deploy": "gh-pages -d dist"
   },
   "dependencies": {
     "phaser": "^3.90.0"
   },
   "devDependencies": {
     "@playwright/test": "^1.55.0",
+    "gh-pages": "^6.3.0",
     "typescript": "^5.9.2",
     "vite": "^7.1.5"
   }

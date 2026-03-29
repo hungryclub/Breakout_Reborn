@@ -1,5 +1,5 @@
 import { Paddle } from "../entities/Paddle.ts";
-import { clampPaddleX } from "./paddleMath";
+import { clampPaddleX } from "./paddleMath.ts";
 
 export class PaddleSystem {
   private readonly paddle: Paddle;

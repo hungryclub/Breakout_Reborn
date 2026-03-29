@@ -9,9 +9,9 @@ import {
   STAGE_FRAME_TEXTURE_KEYS,
   TEXTURE_KEYS,
   UI_ICON_TEXTURE_KEYS,
-} from "../config/assetKeys";
-import { GAME_HEIGHT, GAME_WIDTH } from "../config/gameConfig";
-import { SceneKeys } from "../core/SceneKeys";
+} from "../config/assetKeys.ts";
+import { GAME_HEIGHT, GAME_WIDTH } from "../config/gameConfig.ts";
+import { SceneKeys } from "../core/SceneKeys.ts";
 
 export class PreloadScene extends Phaser.Scene {
   constructor() {

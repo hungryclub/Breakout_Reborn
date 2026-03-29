@@ -1,9 +1,12 @@
 import Phaser from "phaser";
 
-import { TEXTURE_KEYS } from "../config/assetKeys";
+import { TEXTURE_KEYS } from "../config/assetKeys.ts";
 
 export const PADDLE_WIDTH = 240;
 export const PADDLE_HEIGHT = 36;
+export const PADDLE_HITBOX_WIDTH = 236;
+export const PADDLE_HITBOX_HEIGHT = 24;
+export const PADDLE_HITBOX_OFFSET_Y = -2;
 export const PADDLE_BASE_TINT = 0x43d17a;
 
 export class Paddle extends Phaser.GameObjects.Image {
@@ -18,7 +21,11 @@ export class Paddle extends Phaser.GameObjects.Image {
     scene.physics.add.existing(this, true);
 
     const body = this.body as Phaser.Physics.Arcade.StaticBody;
-    body.setSize(PADDLE_WIDTH, PADDLE_HEIGHT);
+    body.setSize(PADDLE_HITBOX_WIDTH, PADDLE_HITBOX_HEIGHT);
+    body.setOffset(
+      (PADDLE_WIDTH - PADDLE_HITBOX_WIDTH) / 2,
+      (PADDLE_HEIGHT - PADDLE_HITBOX_HEIGHT) / 2 + PADDLE_HITBOX_OFFSET_Y,
+    );
     body.updateFromGameObject();
 
     this.setTint(this.baseTint);

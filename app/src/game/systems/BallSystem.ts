@@ -2,6 +2,7 @@ import type Phaser from "phaser";
 
 import {
   BALL_ATTACH_OFFSET,
+  BALL_HITBOX_RADIUS,
   BALL_LAUNCH_HORIZONTAL_RATIO,
   BALL_LAUNCH_LOCK_MS,
   BALL_MAX_BOUNCE_ANGLE,
@@ -43,7 +44,7 @@ export class BallSystem {
       paddle.x,
       paddle.y,
       paddle.displayHeight,
-      BALL_RADIUS,
+      BALL_HITBOX_RADIUS,
       BALL_ATTACH_OFFSET,
     );
 
@@ -62,7 +63,7 @@ export class BallSystem {
       paddle.x,
       paddle.y,
       paddle.displayHeight,
-      BALL_RADIUS,
+      BALL_HITBOX_RADIUS,
       BALL_ATTACH_OFFSET,
     );
 
@@ -119,7 +120,7 @@ export class BallSystem {
     );
 
     this.lastPaddleBounceAt = now;
-    this.ball.y = paddle.y - paddle.displayHeight / 2 - BALL_RADIUS - 2;
+    this.ball.y = paddle.y - paddle.displayHeight / 2 - BALL_HITBOX_RADIUS - 2;
     body.setVelocity(reflection.x, reflection.y);
 
     return true;

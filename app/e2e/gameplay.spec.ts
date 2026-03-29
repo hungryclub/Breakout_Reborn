@@ -6,6 +6,57 @@ test.beforeEach(async ({ page }) => {
   await gotoGame(page);
 });
 
+test("mobile layout removes app padding and fits viewport without scroll", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 664 });
+  await page.goto("/");
+  await page.waitForFunction(() => typeof window.__breakoutTestApi !== "undefined");
+
+  const layout = await page.evaluate(() => {
+    const app = document.querySelector<HTMLElement>("#app");
+    const shell = document.querySelector<HTMLElement>(".app-shell");
+    const appStyle = app ? getComputedStyle(app) : null;
+    const shellRect = shell?.getBoundingClientRect();
+
+    return {
+      scrollWidth: document.documentElement.scrollWidth,
+      scrollHeight: document.documentElement.scrollHeight,
+      innerWidth: window.innerWidth,
+      innerHeight: window.innerHeight,
+      appPadding: appStyle
+        ? {
+            top: appStyle.paddingTop,
+            right: appStyle.paddingRight,
+            bottom: appStyle.paddingBottom,
+            left: appStyle.paddingLeft,
+          }
+        : null,
+      shellRect: shellRect
+        ? {
+            x: shellRect.x,
+            y: shellRect.y,
+            width: shellRect.width,
+            height: shellRect.height,
+            right: shellRect.right,
+            bottom: shellRect.bottom,
+          }
+        : null,
+    };
+  });
+
+  expect(layout.appPadding).toEqual({
+    top: "0px",
+    right: "0px",
+    bottom: "0px",
+    left: "0px",
+  });
+  expect(layout.scrollWidth).toBe(layout.innerWidth);
+  expect(layout.scrollHeight).toBe(layout.innerHeight);
+  expect(layout.shellRect?.x ?? 0).toBeLessThanOrEqual(1);
+  expect((layout.innerWidth - (layout.shellRect?.right ?? 0))).toBeLessThanOrEqual(1);
+  expect(layout.shellRect?.y ?? 0).toBeLessThanOrEqual(1);
+  expect(layout.shellRect?.width ?? 0).toBeGreaterThanOrEqual(layout.innerWidth - 1);
+});
+
 test("launch moves the primary ball", async ({ page }) => {
   await page.evaluate(() => window.__breakoutTestApi?.chooseReward("expand"));
   await page.evaluate(() => window.__breakoutTestApi?.launchPrimaryBall());

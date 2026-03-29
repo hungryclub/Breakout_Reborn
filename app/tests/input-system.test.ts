@@ -7,6 +7,7 @@ import {
   isPointerInInputZone,
   updateRelativeDrag,
 } from "../src/game/systems/InputSystem.ts";
+import { PLAYFIELD_LEFT, PLAYFIELD_RIGHT } from "../src/game/config/playfieldConfig.ts";
 import { clampPaddleX } from "../src/game/systems/paddleMath.ts";
 
 test("하단 35% 입력 구역 안쪽만 입력 시작을 허용한다", () => {
@@ -62,11 +63,11 @@ test("드래그 중 가로 화면 경계를 벗어나면 이동이 즉시 중단
 });
 
 test("패들은 화면 경계를 넘지 않도록 clamp 된다", () => {
-  assert.equal(clampPaddleX(540, 1000, 120), 880);
-  assert.equal(clampPaddleX(540, -1000, 120), 200);
+  assert.equal(clampPaddleX(540, 1000, 120), PLAYFIELD_RIGHT - 120);
+  assert.equal(clampPaddleX(540, -1000, 120), PLAYFIELD_LEFT + 120);
 });
 
 test("확장된 패들도 좌우 플레이필드 경계를 넘지 않도록 다시 clamp 된다", () => {
-  assert.equal(clampPaddleX(940, 0, 160.8), 839.2);
-  assert.equal(clampPaddleX(140, 0, 160.8), 240.8);
+  assert.equal(clampPaddleX(940, 0, 160.8), PLAYFIELD_RIGHT - 160.8);
+  assert.equal(clampPaddleX(140, 0, 160.8), PLAYFIELD_LEFT + 160.8);
 });

@@ -32,10 +32,73 @@ root.innerHTML = `
   </div>
 `;
 
-root.style.setProperty("--safe-top", "max(20px, env(safe-area-inset-top))");
-root.style.setProperty("--safe-right", "max(20px, env(safe-area-inset-right))");
-root.style.setProperty("--safe-bottom", "max(20px, env(safe-area-inset-bottom))");
-root.style.setProperty("--safe-left", "max(20px, env(safe-area-inset-left))");
+root.style.setProperty("--safe-top", "env(safe-area-inset-top, 0px)");
+root.style.setProperty("--safe-right", "env(safe-area-inset-right, 0px)");
+root.style.setProperty("--safe-bottom", "env(safe-area-inset-bottom, 0px)");
+root.style.setProperty("--safe-left", "env(safe-area-inset-left, 0px)");
+
+const DESKTOP_SHELL_BASE_WIDTH = 1180;
+const MOBILE_SHELL_BASE_WIDTH = 1080;
+const DESKTOP_SHELL_BASE_HEIGHT = 2060;
+const MOBILE_SHELL_BASE_HEIGHT = 1980;
+const GAME_ASPECT_RATIO = "1080 / 1920";
+
+root.style.setProperty("--shell-scale", "1");
+root.style.setProperty("--shell-width", `${DESKTOP_SHELL_BASE_WIDTH}px`);
+root.style.setProperty("--shell-height", `${DESKTOP_SHELL_BASE_HEIGHT}px`);
+root.style.setProperty("--game-mount-aspect-ratio", GAME_ASPECT_RATIO);
+
+const updateShellScale = (): void => {
+  const viewport = window.visualViewport;
+  const viewportWidth = Math.max(
+    window.innerWidth,
+    document.documentElement.clientWidth,
+    Math.round(viewport?.width ?? 0),
+  );
+  const viewportHeight = Math.max(
+    window.innerHeight,
+    document.documentElement.clientHeight,
+    Math.round(viewport?.height ?? 0),
+  );
+  const isMobile = viewportWidth <= 900;
+  const shellBaseWidth = isMobile ? MOBILE_SHELL_BASE_WIDTH : DESKTOP_SHELL_BASE_WIDTH;
+  const rootStyles = getComputedStyle(root);
+  const paddingX =
+    parseFloat(rootStyles.paddingLeft || "0") + parseFloat(rootStyles.paddingRight || "0");
+  const paddingY =
+    parseFloat(rootStyles.paddingTop || "0") + parseFloat(rootStyles.paddingBottom || "0");
+  const shellBaseHeight = isMobile ? MOBILE_SHELL_BASE_HEIGHT : DESKTOP_SHELL_BASE_HEIGHT;
+  const availableWidth = Math.max(0, viewportWidth - paddingX);
+  const availableHeight = Math.max(0, viewportHeight - paddingY);
+
+  root.style.setProperty("--shell-base-width", `${shellBaseWidth}px`);
+  root.style.setProperty("--shell-base-height", `${shellBaseHeight}px`);
+
+  if (isMobile) {
+    root.style.setProperty("--shell-scale", "1");
+    root.style.setProperty("--shell-width", `${availableWidth}px`);
+    root.style.setProperty("--shell-height", `${availableHeight}px`);
+    root.style.setProperty("--game-mount-aspect-ratio", GAME_ASPECT_RATIO);
+    return;
+  }
+
+  const scale = Math.min(
+    1,
+    availableWidth / shellBaseWidth,
+    availableHeight / shellBaseHeight,
+  );
+
+  root.style.setProperty("--shell-scale", scale.toFixed(4));
+  root.style.setProperty("--shell-width", `${shellBaseWidth * scale}px`);
+  root.style.setProperty("--shell-height", `${shellBaseHeight * scale}px`);
+  root.style.setProperty("--game-mount-aspect-ratio", GAME_ASPECT_RATIO);
+};
+
+updateShellScale();
+window.addEventListener("resize", updateShellScale, { passive: true });
+window.visualViewport?.addEventListener("resize", updateShellScale, {
+  passive: true,
+});
 
 const mountGame = async (): Promise<void> => {
   await import("./game/core/Game");

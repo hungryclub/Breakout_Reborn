@@ -1,18 +1,18 @@
 import Phaser from "phaser";
 
-import { TEXTURE_KEYS } from "../config/assetKeys";
-import { GAME_HEIGHT, GAME_WIDTH } from "../config/gameConfig";
+import { TEXTURE_KEYS } from "../config/assetKeys.ts";
+import { GAME_HEIGHT, GAME_WIDTH } from "../config/gameConfig.ts";
 import {
   INPUT_SENSITIVITY_PRESETS,
   type InputSensitivityPreset,
-} from "../config/inputConfig";
-import { STAGE_PRESENTATION_PROFILES } from "../config/presentationConfig";
+} from "../config/inputConfig.ts";
+import { STAGE_PRESENTATION_PROFILES } from "../config/presentationConfig.ts";
 import {
   loadRuntimeSettings,
   saveRuntimeSettings,
   type RuntimeSettings,
-} from "../config/settings";
-import { SceneKeys } from "../core/SceneKeys";
+} from "../config/settings.ts";
+import { SceneKeys } from "../core/SceneKeys.ts";
 
 export class MenuScene extends Phaser.Scene {
   private attractBall?: Phaser.GameObjects.Image;
@@ -22,6 +22,15 @@ export class MenuScene extends Phaser.Scene {
   private attractLoopTimer?: Phaser.Time.TimerEvent;
   private readonly attractBounds = { left: GAME_WIDTH / 2 - 320, right: GAME_WIDTH / 2 + 320 };
   private runtimeSettings: RuntimeSettings = loadRuntimeSettings();
+  private layoutSnapshot = {
+    isMobile: false,
+    gameHeight: 0,
+    backdropCenterY: 0,
+    contentTop: 0,
+    backdropBottom: 0,
+    optionsBottom: 0,
+    contentBottom: 0,
+  };
 
   constructor() {
     super(SceneKeys.Menu);
@@ -29,22 +38,194 @@ export class MenuScene extends Phaser.Scene {
 
   create(): void {
     const stageProfile = STAGE_PRESENTATION_PROFILES[4];
+    const isMobile = this.scale.parentSize.width <= 480;
+    type MenuLayout = {
+      backdropWidth: number;
+      backdropHeight: number;
+      backdropCenterY: number;
+      heroOuterY: number;
+      heroOuterWidth: number;
+      heroOuterHeight: number;
+      heroInnerWidth: number;
+      heroInnerHeight: number;
+      bricksY1: number;
+      bricksY2: number;
+      trailY: number;
+      attractBallX: number;
+      attractBallY: number;
+      attractPaddleX: number;
+      attractPaddleY: number;
+      attractLaunchTargetX: number;
+      attractLaunchTargetY: number;
+      titleY: number;
+      eyebrowY: number;
+      titleFontSize: string;
+      eyebrowFontSize: string;
+      eyebrowSpacing: number;
+      subtitleY: number;
+      subtitleFontSize: string;
+      bodyY: number;
+      bodyFontSize: string;
+      bodyLineSpacing: number;
+      startButtonY: number;
+      startButtonWidth: number;
+      startButtonHeight: number;
+      startButtonFontSize: string;
+      labelsY: number;
+      labelsFontSize: string;
+      microHintY: number;
+      microHintFontSize: string;
+      bodyFooterY: number;
+      bodyFooterFontSize: string;
+      optionsTitleY: number;
+      optionsTitleFontSize: string;
+      optionsPanelY: number;
+      optionsPanelWidth: number;
+      optionsPanelHeight: number;
+      optionsButtonsY: number;
+      pointerZoneMinY: number;
+      pointerZoneMaxY: number;
+    };
+
+    const layout: MenuLayout = isMobile
+      ? {
+          backdropWidth: 980,
+          backdropHeight: 1640,
+          backdropCenterY: GAME_HEIGHT / 2,
+          heroOuterY: 1178,
+          heroOuterWidth: 860,
+          heroOuterHeight: 560,
+          heroInnerWidth: 820,
+          heroInnerHeight: 520,
+          bricksY1: 1022,
+          bricksY2: 1098,
+          trailY: 1258,
+          attractBallX: GAME_WIDTH / 2 + 88,
+          attractBallY: 1234,
+          attractPaddleX: GAME_WIDTH / 2 - 60,
+          attractPaddleY: 1406,
+          attractLaunchTargetX: GAME_WIDTH / 2 - 116,
+          attractLaunchTargetY: 1336,
+          titleY: 478,
+          eyebrowY: 318,
+          titleFontSize: "88px",
+          eyebrowFontSize: "18px",
+          eyebrowSpacing: 2,
+          subtitleY: 816,
+          subtitleFontSize: "28px",
+          bodyY: 896,
+          bodyFontSize: "20px",
+          bodyLineSpacing: 6,
+          startButtonY: 1434,
+          startButtonWidth: 540,
+          startButtonHeight: 140,
+          startButtonFontSize: "54px",
+          labelsY: 1560,
+          labelsFontSize: "16px",
+          microHintY: 1668,
+          microHintFontSize: "16px",
+          bodyFooterY: 1756,
+          bodyFooterFontSize: "26px",
+          optionsTitleY: 1824,
+          optionsTitleFontSize: "20px",
+          optionsPanelY: 1890,
+          optionsPanelWidth: 860,
+          optionsPanelHeight: 184,
+          optionsButtonsY: 1930,
+          pointerZoneMinY: 994,
+          pointerZoneMaxY: 1584,
+        }
+      : {
+          backdropWidth: 860,
+          backdropHeight: 1260,
+          backdropCenterY: GAME_HEIGHT / 2,
+          heroOuterY: 960,
+          heroOuterWidth: 760,
+          heroOuterHeight: 420,
+          heroInnerWidth: 720,
+          heroInnerHeight: 380,
+          bricksY1: 826,
+          bricksY2: 890,
+          trailY: 994,
+          attractBallX: GAME_WIDTH / 2 + 88,
+          attractBallY: 968,
+          attractPaddleX: GAME_WIDTH / 2 - 60,
+          attractPaddleY: 1118,
+          attractLaunchTargetX: GAME_WIDTH / 2 - 116,
+          attractLaunchTargetY: 1088,
+          titleY: 320,
+          eyebrowY: 208,
+          titleFontSize: "104px",
+          eyebrowFontSize: "22px",
+          eyebrowSpacing: 3,
+          subtitleY: 640,
+          subtitleFontSize: "34px",
+          bodyY: 728,
+          bodyFontSize: "24px",
+          bodyLineSpacing: 8,
+          startButtonY: 1080,
+          startButtonWidth: 520,
+          startButtonHeight: 150,
+          startButtonFontSize: "58px",
+          labelsY: 1214,
+          labelsFontSize: "18px",
+          microHintY: 1282,
+          microHintFontSize: "18px",
+          bodyFooterY: 1340,
+          bodyFooterFontSize: "28px",
+          optionsTitleY: 1404,
+          optionsTitleFontSize: "22px",
+          optionsPanelY: 1460,
+          optionsPanelWidth: 720,
+          optionsPanelHeight: 164,
+          optionsButtonsY: 1482,
+          pointerZoneMinY: 820,
+          pointerZoneMaxY: 1260,
+        };
+
+    if (isMobile) {
+      const mobileContentTop = layout.eyebrowY;
+      const mobileContentBottom = layout.optionsPanelY + layout.optionsPanelHeight / 2;
+      const mobileContentCenter = (mobileContentTop + mobileContentBottom) / 2;
+      const mobileCenterShift = layout.backdropCenterY - mobileContentCenter;
+
+      layout.heroOuterY += mobileCenterShift;
+      layout.bricksY1 += mobileCenterShift;
+      layout.bricksY2 += mobileCenterShift;
+      layout.trailY += mobileCenterShift;
+      layout.attractBallY += mobileCenterShift;
+      layout.attractPaddleY += mobileCenterShift;
+      layout.attractLaunchTargetY += mobileCenterShift;
+      layout.titleY += mobileCenterShift;
+      layout.eyebrowY += mobileCenterShift;
+      layout.subtitleY += mobileCenterShift;
+      layout.bodyY += mobileCenterShift;
+      layout.startButtonY += mobileCenterShift;
+      layout.labelsY += mobileCenterShift;
+      layout.microHintY += mobileCenterShift;
+      layout.bodyFooterY += mobileCenterShift;
+      layout.optionsTitleY += mobileCenterShift;
+      layout.optionsPanelY += mobileCenterShift;
+      layout.optionsButtonsY += mobileCenterShift;
+      layout.pointerZoneMinY += mobileCenterShift;
+      layout.pointerZoneMaxY += mobileCenterShift;
+    }
 
     this.add
-      .image(GAME_WIDTH / 2, GAME_HEIGHT / 2, TEXTURE_KEYS.menuBackdrop)
-      .setDisplaySize(860, 1260)
+      .image(GAME_WIDTH / 2, layout.backdropCenterY, TEXTURE_KEYS.menuBackdrop)
+      .setDisplaySize(layout.backdropWidth, layout.backdropHeight)
       .setAlpha(0.98);
-    this.add.rectangle(GAME_WIDTH / 2, GAME_HEIGHT / 2, 860, 1260, 0x10233e, 0.18);
+    this.add.rectangle(GAME_WIDTH / 2, layout.backdropCenterY, layout.backdropWidth, layout.backdropHeight, 0x10233e, 0.18);
     this.add.ellipse(GAME_WIDTH / 2, 430, 520, 220, 0x6dd7ff, 0.08);
-    this.add.rectangle(GAME_WIDTH / 2, 960, 760, 420, 0x0d1830, 0.42).setStrokeStyle(2, 0x6dd7ff, 0.18);
-    this.add.rectangle(GAME_WIDTH / 2, 960, 720, 380, 0x0a1325, 0.34);
+    this.add.rectangle(GAME_WIDTH / 2, layout.heroOuterY, layout.heroOuterWidth, layout.heroOuterHeight, 0x0d1830, 0.42).setStrokeStyle(2, 0x6dd7ff, 0.18);
+    this.add.rectangle(GAME_WIDTH / 2, layout.heroOuterY, layout.heroInnerWidth, layout.heroInnerHeight, 0x0a1325, 0.34);
 
     const attractBricks = [
-      { x: GAME_WIDTH / 2 - 180, y: 826, tint: 0x8fdcff },
-      { x: GAME_WIDTH / 2 - 10, y: 826, tint: 0xffb366 },
-      { x: GAME_WIDTH / 2 + 160, y: 826, tint: 0xff7db4 },
-      { x: GAME_WIDTH / 2 - 95, y: 890, tint: 0xd0eaff },
-      { x: GAME_WIDTH / 2 + 75, y: 890, tint: 0xb68cff },
+      { x: GAME_WIDTH / 2 - 180, y: layout.bricksY1, tint: 0x8fdcff },
+      { x: GAME_WIDTH / 2 - 10, y: layout.bricksY1, tint: 0xffb366 },
+      { x: GAME_WIDTH / 2 + 160, y: layout.bricksY1, tint: 0xff7db4 },
+      { x: GAME_WIDTH / 2 - 95, y: layout.bricksY2, tint: 0xd0eaff },
+      { x: GAME_WIDTH / 2 + 75, y: layout.bricksY2, tint: 0xb68cff },
     ];
 
     attractBricks.forEach((brick, index) => {
@@ -65,7 +246,7 @@ export class MenuScene extends Phaser.Scene {
       });
     });
 
-    const attractTrail = this.add.rectangle(GAME_WIDTH / 2 + 70, 994, 240, 6, 0xffffff, 0.08).setAngle(-38);
+    const attractTrail = this.add.rectangle(GAME_WIDTH / 2 + 70, layout.trailY, 240, 6, 0xffffff, 0.08).setAngle(-38);
     this.tweens.add({
       targets: attractTrail,
       alpha: { from: 0.02, to: 0.18 },
@@ -76,19 +257,19 @@ export class MenuScene extends Phaser.Scene {
     });
 
     this.attractBall = this.add
-      .image(GAME_WIDTH / 2 + 88, 968, TEXTURE_KEYS.ball)
+      .image(layout.attractBallX, layout.attractBallY, TEXTURE_KEYS.ball)
       .setDisplaySize(40, 40)
       .setTint(0xffffff);
     this.attractPaddle = this.add
-      .image(GAME_WIDTH / 2 - 60, 1118, TEXTURE_KEYS.paddle)
+      .image(layout.attractPaddleX, layout.attractPaddleY, TEXTURE_KEYS.paddle)
       .setDisplaySize(240, 36)
       .setTint(0x43d17a);
     this.attractBallGlow = this.add.circle(this.attractBall.x, this.attractBall.y, 30, stageProfile.accentNumber, 0.12);
 
     this.tweens.add({
       targets: [this.attractBall, this.attractBallGlow],
-      x: GAME_WIDTH / 2 - 116,
-      y: 1088,
+      x: layout.attractLaunchTargetX,
+      y: layout.attractLaunchTargetY,
       duration: 1180,
       ease: "Sine.easeInOut",
       yoyo: true,
@@ -114,10 +295,10 @@ export class MenuScene extends Phaser.Scene {
 
     ["MULTIBALL", "LASER", "CHAIN", "MAGNET"].forEach((label, index) => {
       const pill = this.add
-        .text(GAME_WIDTH / 2 - 240 + index * 160, 1214, label, {
+        .text(GAME_WIDTH / 2 - 240 + index * 160, layout.labelsY, label, {
           color: index % 2 === 0 ? "#8fdcff" : "#ffd166",
           fontFamily: "Verdana",
-          fontSize: "18px",
+          fontSize: layout.labelsFontSize,
           fontStyle: "bold",
         })
         .setOrigin(0.5)
@@ -134,57 +315,57 @@ export class MenuScene extends Phaser.Scene {
     });
 
     this.add
-      .text(GAME_WIDTH / 2, 320, "BREAKOUT\nREBORN", {
+      .text(GAME_WIDTH / 2, layout.titleY, "BREAKOUT\nREBORN", {
         align: "center",
         color: "#f4f7fb",
         fontFamily: "Verdana",
-        fontSize: "104px",
+        fontSize: layout.titleFontSize,
         fontStyle: "bold",
         lineSpacing: 8,
       })
       .setOrigin(0.5);
 
     this.add
-      .text(GAME_WIDTH / 2, 208, "COMMERCIAL ARCADE PREVIEW", {
+      .text(GAME_WIDTH / 2, layout.eyebrowY, "COMMERCIAL ARCADE PREVIEW", {
         align: "center",
         color: "#8edcff",
         fontFamily: "Verdana",
-        fontSize: "22px",
+        fontSize: layout.eyebrowFontSize,
         fontStyle: "bold",
-        letterSpacing: 3,
+        letterSpacing: layout.eyebrowSpacing,
       })
       .setOrigin(0.5);
 
     this.add
-      .text(GAME_WIDTH / 2, 640, "One-hand vertical breaker with fast replay energy", {
+      .text(GAME_WIDTH / 2, layout.subtitleY, "One-hand vertical breaker with fast replay energy", {
         align: "center",
         color: "#93b9e7",
         fontFamily: "Verdana",
-        fontSize: "34px",
+        fontSize: layout.subtitleFontSize,
       })
       .setOrigin(0.5);
 
     this.add
       .text(
         GAME_WIDTH / 2,
-        728,
+        layout.bodyY,
         "Multiball, laser, chain bricks, and instant retries.\nBuilt to feel like a compact commercial arcade run.",
         {
           align: "center",
           color: "#d6e5f5",
           fontFamily: "Verdana",
-          fontSize: "24px",
-          lineSpacing: 8,
+          fontSize: layout.bodyFontSize,
+          lineSpacing: layout.bodyLineSpacing,
         },
       )
       .setOrigin(0.5);
 
     const microHint = this.add
-      .text(GAME_WIDTH / 2, 1282, "PREVIEW AREA: DRAG THE PADDLE, TAP TO SPLIT THE BALL", {
+      .text(GAME_WIDTH / 2, layout.microHintY, "PREVIEW AREA: DRAG THE PADDLE, TAP TO SPLIT THE BALL", {
         align: "center",
         color: "#8fdcff",
         fontFamily: "Verdana",
-        fontSize: "18px",
+        fontSize: layout.microHintFontSize,
         fontStyle: "bold",
       })
       .setOrigin(0.5)
@@ -197,16 +378,16 @@ export class MenuScene extends Phaser.Scene {
       repeat: -1,
     });
 
-    const optionsPanel = this.add.rectangle(GAME_WIDTH / 2, 1460, 720, 164, 0x0d1830, 0.56).setStrokeStyle(
+    const optionsPanel = this.add.rectangle(GAME_WIDTH / 2, layout.optionsPanelY, layout.optionsPanelWidth, layout.optionsPanelHeight, 0x0d1830, 0.56).setStrokeStyle(
       2,
       0x8fdcff,
       0.16,
     );
     this.add
-      .text(GAME_WIDTH / 2, 1404, "OPTIONS", {
+      .text(GAME_WIDTH / 2, layout.optionsTitleY, "OPTIONS", {
         color: "#f4f7fb",
         fontFamily: "Verdana",
-        fontSize: "22px",
+        fontSize: layout.optionsTitleFontSize,
         fontStyle: "bold",
         letterSpacing: 2,
       })
@@ -214,7 +395,7 @@ export class MenuScene extends Phaser.Scene {
 
     const sensitivityButton = this.createOptionButton(
       GAME_WIDTH / 2 - 220,
-      1482,
+      layout.optionsButtonsY,
       () => `SENS ${this.runtimeSettings.sensitivity.toUpperCase()}`,
       () => {
         const presets = Object.keys(INPUT_SENSITIVITY_PRESETS) as InputSensitivityPreset[];
@@ -225,7 +406,7 @@ export class MenuScene extends Phaser.Scene {
     );
     const sfxButton = this.createOptionButton(
       GAME_WIDTH / 2,
-      1482,
+      layout.optionsButtonsY,
       () => `SFX ${this.runtimeSettings.sfxEnabled ? "ON" : "OFF"}`,
       () => {
         this.runtimeSettings.sfxEnabled = !this.runtimeSettings.sfxEnabled;
@@ -234,7 +415,7 @@ export class MenuScene extends Phaser.Scene {
     );
     const bgmButton = this.createOptionButton(
       GAME_WIDTH / 2 + 220,
-      1482,
+      layout.optionsButtonsY,
       () => `BGM ${this.runtimeSettings.bgmEnabled ? "ON" : "OFF"}`,
       () => {
         this.runtimeSettings.bgmEnabled = !this.runtimeSettings.bgmEnabled;
@@ -245,9 +426,9 @@ export class MenuScene extends Phaser.Scene {
     optionsPanel.data?.set("buttons", [sensitivityButton, sfxButton, bgmButton]);
 
     const startButton = this.add
-      .rectangle(GAME_WIDTH / 2, 1080, 520, 150, 0x43d17a, 1)
+      .rectangle(GAME_WIDTH / 2, layout.startButtonY, layout.startButtonWidth, layout.startButtonHeight, 0x43d17a, 1)
       .setInteractive({ useHandCursor: true });
-    const startGlow = this.add.rectangle(GAME_WIDTH / 2, 1080, 548, 170, 0x43d17a, 0.18);
+    const startGlow = this.add.rectangle(GAME_WIDTH / 2, layout.startButtonY, layout.startButtonWidth + 28, layout.startButtonHeight + 20, 0x43d17a, 0.18);
     this.tweens.add({
       targets: startGlow,
       alpha: { from: 0.08, to: 0.28 },
@@ -262,22 +443,36 @@ export class MenuScene extends Phaser.Scene {
       .text(startButton.x, startButton.y, "START", {
         color: "#0b1320",
         fontFamily: "Verdana",
-        fontSize: "58px",
+        fontSize: layout.startButtonFontSize,
         fontStyle: "bold",
       })
       .setOrigin(0.5);
 
     this.add
-      .text(GAME_WIDTH / 2, 1340, "No menus to dig through. Drop straight into play.", {
+      .text(GAME_WIDTH / 2, layout.bodyFooterY, "No menus to dig through. Drop straight into play.", {
         align: "center",
         color: "#d5e2f5",
         fontFamily: "Verdana",
-        fontSize: "28px",
+        fontSize: layout.bodyFooterFontSize,
       })
       .setOrigin(0.5);
 
+    this.layoutSnapshot = {
+      isMobile,
+      gameHeight: GAME_HEIGHT,
+      backdropCenterY: layout.backdropCenterY,
+      contentTop: layout.eyebrowY,
+      backdropBottom: layout.backdropCenterY + layout.backdropHeight / 2,
+      optionsBottom: layout.optionsPanelY + layout.optionsPanelHeight / 2,
+      contentBottom: Math.max(
+        layout.optionsPanelY + layout.optionsPanelHeight / 2,
+        layout.bodyFooterY + 24,
+        layout.microHintY + 16,
+      ),
+    };
+
     this.input.on("pointermove", (pointer: Phaser.Input.Pointer) => {
-      if (!this.attractPaddle || !this.attractBall || pointer.y < 820 || pointer.y > 1260) {
+      if (!this.attractPaddle || !this.attractBall || pointer.y < layout.pointerZoneMinY || pointer.y > layout.pointerZoneMaxY) {
         return;
       }
 
@@ -285,7 +480,7 @@ export class MenuScene extends Phaser.Scene {
       this.attractPaddle.x = nextX;
       if (this.attractAttached) {
         this.attractBall.x = nextX + 72;
-        this.attractBall.y = 1076;
+        this.attractBall.y = layout.attractLaunchTargetY - 12;
         if (this.attractBallGlow) {
           this.attractBallGlow.x = this.attractBall.x;
           this.attractBallGlow.y = this.attractBall.y;
@@ -294,7 +489,7 @@ export class MenuScene extends Phaser.Scene {
     });
 
     this.input.on("pointerdown", (pointer: Phaser.Input.Pointer) => {
-      if (pointer.y >= 820 && pointer.y <= 1260) {
+      if (pointer.y >= layout.pointerZoneMinY && pointer.y <= layout.pointerZoneMaxY) {
         if (pointer.y > 1000 && this.attractPaddle) {
           this.tweens.killTweensOf(this.attractPaddle);
           this.tweens.add({
@@ -397,12 +592,21 @@ export class MenuScene extends Phaser.Scene {
 
       this.attractAttached = true;
       this.attractBall.x = this.attractPaddle.x + 72;
-      this.attractBall.y = 1076;
+      this.attractBall.y = this.attractPaddle.y - 42;
       this.attractBallGlow.x = this.attractBall.x;
       this.attractBallGlow.y = this.attractBall.y;
       this.attractBallGlow.setAlpha(0.12);
       this.attractBallGlow.setScale(1);
     });
+  }
+
+  getDebugLayout(): {
+    isMobile: boolean;
+    backdropBottom: number;
+    optionsBottom: number;
+    contentBottom: number;
+  } {
+    return this.layoutSnapshot;
   }
 
   private createOptionButton(

@@ -3,6 +3,7 @@ import type Phaser from "phaser";
 import type { PowerupType } from "../config/powerupConfig.ts";
 import { SceneKeys } from "../core/SceneKeys.ts";
 import type { GameScene } from "../scenes/GameScene.ts";
+import type { MenuScene } from "../scenes/MenuScene.ts";
 
 declare global {
   interface Window {
@@ -15,6 +16,7 @@ export interface BreakoutTestApi {
   resetMeta(): void;
   setBotMode(enabled: boolean): void;
   getSnapshot(): ReturnType<GameScene["getDebugSnapshot"]> | null;
+  getMenuLayout(): ReturnType<MenuScene["getDebugLayout"]> | null;
   botStep(stepIndex: number): ReturnType<GameScene["getDebugSnapshot"]> | null;
   chooseReward(type: PowerupType): boolean;
   grantPowerup(type: PowerupType): boolean;
@@ -36,6 +38,15 @@ function getGameScene(game: Phaser.Game): GameScene | null {
   }
 
   return scene as GameScene;
+}
+
+function getMenuScene(game: Phaser.Game): MenuScene | null {
+  const scene = game.scene.getScene(SceneKeys.Menu);
+  if (!scene || !scene.scene.isActive()) {
+    return null;
+  }
+
+  return scene as MenuScene;
 }
 
 export function registerDebugApi(game: Phaser.Game): void {
@@ -75,6 +86,9 @@ export function registerDebugApi(game: Phaser.Game): void {
     },
     getSnapshot() {
       return getGameScene(game)?.getDebugSnapshot() ?? null;
+    },
+    getMenuLayout() {
+      return getMenuScene(game)?.getDebugLayout() ?? null;
     },
     botStep(stepIndex) {
       return getGameScene(game)?.debugBotStep(stepIndex) ?? null;

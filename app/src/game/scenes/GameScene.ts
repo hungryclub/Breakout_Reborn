@@ -1,10 +1,10 @@
 import Phaser from "phaser";
 
-import { BALL_RADIUS } from "../config/ballConfig.ts";
-import { STAGE_FRAME_TEXTURE_KEYS } from "../config/assetKeys";
-import { GAME_HEIGHT, GAME_WIDTH } from "../config/gameConfig";
-import { INPUT_SENSITIVITY_PRESETS, DEFAULT_INPUT_SENSITIVITY } from "../config/inputConfig";
-import { loadRuntimeSettings, type RuntimeSettings } from "../config/settings";
+import { BALL_HITBOX_RADIUS, BALL_RADIUS } from "../config/ballConfig.ts";
+import { STAGE_FRAME_TEXTURE_KEYS } from "../config/assetKeys.ts";
+import { GAME_HEIGHT, GAME_WIDTH } from "../config/gameConfig.ts";
+import { INPUT_SENSITIVITY_PRESETS, DEFAULT_INPUT_SENSITIVITY } from "../config/inputConfig.ts";
+import { loadRuntimeSettings, type RuntimeSettings } from "../config/settings.ts";
 import {
   PLAYFIELD_BOTTOM,
   PLAYFIELD_HEIGHT,
@@ -16,27 +16,27 @@ import type { PowerupType } from "../config/powerupConfig.ts";
 import {
   STAGE_BACKGROUND_COLORS,
   STAGE_PRESENTATION_PROFILES,
-} from "../config/presentationConfig";
-import { STAGE_COUNT } from "../config/stageConfig";
-import { SceneKeys } from "../core/SceneKeys";
-import { Ball } from "../entities/Ball";
-import { Brick } from "../entities/Brick";
-import { Paddle } from "../entities/Paddle";
-import { BallSystem } from "../systems/BallSystem";
-import { BrickSystem } from "../systems/BrickSystem";
-import { ComboSystem } from "../systems/ComboSystem";
-import { InputSystem } from "../systems/InputSystem";
-import { MetaSystem } from "../systems/MetaSystem";
-import { AudioCueSystem } from "../systems/AudioCueSystem";
-import { MusicSystem } from "../systems/MusicSystem";
-import { PaddleSystem } from "../systems/PaddleSystem";
-import { PowerupEffectSystem } from "../systems/PowerupEffectSystem";
-import { PowerupSystem } from "../systems/PowerupSystem";
-import { getBallPulseScale, getTrailStyle } from "../systems/presentationMath";
-import type { BrickType } from "../entities/Brick";
-import { shouldForcePaddleBounce, shouldProcessPaddleBounce } from "../systems/reflectionMath";
-import { createRewardChoices, type RewardChoice } from "../systems/rewardMath";
-import { TelemetrySystem } from "../systems/TelemetrySystem";
+} from "../config/presentationConfig.ts";
+import { STAGE_COUNT } from "../config/stageConfig.ts";
+import { SceneKeys } from "../core/SceneKeys.ts";
+import { Ball } from "../entities/Ball.ts";
+import { Brick } from "../entities/Brick.ts";
+import { Paddle } from "../entities/Paddle.ts";
+import { BallSystem } from "../systems/BallSystem.ts";
+import { BrickSystem } from "../systems/BrickSystem.ts";
+import { ComboSystem } from "../systems/ComboSystem.ts";
+import { InputSystem } from "../systems/InputSystem.ts";
+import { MetaSystem } from "../systems/MetaSystem.ts";
+import { AudioCueSystem } from "../systems/AudioCueSystem.ts";
+import { MusicSystem } from "../systems/MusicSystem.ts";
+import { PaddleSystem } from "../systems/PaddleSystem.ts";
+import { PowerupEffectSystem } from "../systems/PowerupEffectSystem.ts";
+import { PowerupSystem } from "../systems/PowerupSystem.ts";
+import { getBallPulseScale, getTrailStyle } from "../systems/presentationMath.ts";
+import type { BrickType } from "../entities/Brick.ts";
+import { shouldForcePaddleBounce, shouldProcessPaddleBounce } from "../systems/reflectionMath.ts";
+import { createRewardChoices, type RewardChoice } from "../systems/rewardMath.ts";
+import { TelemetrySystem } from "../systems/TelemetrySystem.ts";
 
 interface TapCandidate {
   pointerId: number;
@@ -117,7 +117,9 @@ export class GameScene extends Phaser.Scene {
       })
       .setOrigin(0.5);
 
-    const paddle = new Paddle(this, GAME_WIDTH / 2, 1528);
+    const paddleY = PLAYFIELD_BOTTOM - 142;
+    const instructionY = Math.min(GAME_HEIGHT - 180, PLAYFIELD_BOTTOM + 110);
+    const paddle = new Paddle(this, GAME_WIDTH / 2, paddleY);
     this.add.existing(paddle);
     this.paddleSystem = new PaddleSystem(paddle);
     this.applyStagePresentation(this.currentStage);
@@ -153,7 +155,7 @@ export class GameScene extends Phaser.Scene {
     this.instructionText = this.add
       .text(
         GAME_WIDTH / 2,
-        1640,
+        instructionY,
         "하단 35% 영역에서 드래그해 패들을 움직여 보세요.\n탭 한 번이면 공이 패들 위에서 즉시 발사됩니다.",
         {
           align: "center",
@@ -1086,7 +1088,7 @@ export class GameScene extends Phaser.Scene {
         paddleBody.top,
         paddleBody.bottom,
         paddle.displayWidth,
-        BALL_RADIUS,
+        BALL_HITBOX_RADIUS,
       )
     ) {
       return false;

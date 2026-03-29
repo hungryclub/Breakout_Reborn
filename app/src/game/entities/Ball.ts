@@ -1,7 +1,8 @@
 import Phaser from "phaser";
 
-import { TEXTURE_KEYS } from "../config/assetKeys";
+import { TEXTURE_KEYS } from "../config/assetKeys.ts";
 import {
+  BALL_HITBOX_RADIUS,
   BALL_RADIUS,
   BALL_STROKE_ALPHA,
   BALL_STROKE_COLOR,
@@ -17,7 +18,8 @@ export class Ball extends Phaser.GameObjects.Image {
     scene.physics.add.existing(this);
 
     const body = this.body as Phaser.Physics.Arcade.Body;
-    body.setCircle(BALL_RADIUS);
+    const hitboxOffset = BALL_RADIUS - BALL_HITBOX_RADIUS;
+    body.setCircle(BALL_HITBOX_RADIUS, hitboxOffset, hitboxOffset);
     body.setAllowGravity(false);
   }
 

@@ -1,18 +1,21 @@
 import type Phaser from "phaser";
 
-import { BGM_TRACK_KEYS } from "../config/assetKeys";
+import { BGM_TRACK_KEYS } from "../config/assetKeys.ts";
 
 export class MusicSystem {
   private currentTrack?: Phaser.Sound.BaseSound;
   private currentStage?: number;
   private unlocked = false;
   private enabled = true;
+  private readonly scene: Phaser.Scene;
+  private readonly sound: Phaser.Sound.BaseSoundManager;
+  private readonly audioCache: Phaser.Cache.BaseCache;
 
-  constructor(
-    private readonly scene: Phaser.Scene,
-    private readonly sound: Phaser.Sound.BaseSoundManager,
-    private readonly audioCache: Phaser.Cache.BaseCache,
-  ) {}
+  constructor(scene: Phaser.Scene, sound: Phaser.Sound.BaseSoundManager, audioCache: Phaser.Cache.BaseCache) {
+    this.scene = scene;
+    this.sound = sound;
+    this.audioCache = audioCache;
+  }
 
   unlock(): void {
     this.unlocked = true;

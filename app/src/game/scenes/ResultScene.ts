@@ -1,7 +1,7 @@
 import Phaser from "phaser";
 
-import { GAME_HEIGHT, GAME_WIDTH } from "../config/gameConfig";
-import { SceneKeys } from "../core/SceneKeys";
+import { GAME_HEIGHT, GAME_WIDTH } from "../config/gameConfig.ts";
+import { SceneKeys } from "../core/SceneKeys.ts";
 
 export class ResultScene extends Phaser.Scene {
   constructor() {

@@ -1,8 +1,25 @@
+import {
+  BRICK_COLUMNS,
+  BRICK_GAP,
+  BRICK_HEIGHT,
+  BRICK_ROWS,
+  BRICK_START_Y,
+  BRICK_WIDTH,
+} from "../config/brickConfig.ts";
+import { PLAYFIELD_GAME_WIDTH } from "../config/playfieldConfig.ts";
 import type { BrickLayoutItem } from "./brickMath.ts";
 import { createCenteredBrickLayout } from "./brickMath.ts";
 
 export function createStageLayout(stage: number): BrickLayoutItem[] {
-  const base = createCenteredBrickLayout(1080, 250, 6, 4, 132, 48, 16);
+  const base = createCenteredBrickLayout(
+    PLAYFIELD_GAME_WIDTH,
+    BRICK_START_Y,
+    BRICK_COLUMNS,
+    BRICK_ROWS,
+    BRICK_WIDTH,
+    BRICK_HEIGHT,
+    BRICK_GAP,
+  );
 
   return base.map((item) => {
     if (stage === 1) {

@@ -1,6 +1,6 @@
 import Phaser from "phaser";
 
-import { POWERUP_TEXTURE_KEYS } from "../config/assetKeys";
+import { POWERUP_TEXTURE_KEYS } from "../config/assetKeys.ts";
 import {
   POWERUP_FALL_SPEED,
   POWERUP_SIZE,

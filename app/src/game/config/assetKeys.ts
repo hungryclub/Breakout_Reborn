@@ -1,5 +1,5 @@
-import type { BrickType } from "../entities/Brick";
-import type { PowerupType } from "./powerupConfig";
+import type { BrickType } from "../entities/Brick.ts";
+import type { PowerupType } from "./powerupConfig.ts";
 
 export const TEXTURE_KEYS = {
   ball: "ball-core",

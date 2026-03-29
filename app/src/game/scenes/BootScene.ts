@@ -1,6 +1,6 @@
 import Phaser from "phaser";
 
-import { SceneKeys } from "../core/SceneKeys";
+import { SceneKeys } from "../core/SceneKeys.ts";
 
 export class BootScene extends Phaser.Scene {
   constructor() {

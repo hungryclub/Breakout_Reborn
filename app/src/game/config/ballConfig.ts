@@ -1,4 +1,5 @@
 export const BALL_RADIUS = 18;
+export const BALL_HITBOX_RADIUS = 15;
 export const BALL_FILL_COLOR = 0xf4f7fb;
 export const BALL_STROKE_COLOR = 0x6dd7ff;
 export const BALL_STROKE_ALPHA = 0.9;

@@ -1,6 +1,6 @@
 import Phaser from "phaser";
 
-import { BRICK_DEBRIS_TEXTURE_KEYS } from "../config/assetKeys";
+import { BRICK_DEBRIS_TEXTURE_KEYS } from "../config/assetKeys.ts";
 import {
   BASIC_BRICK_SCORE,
   BRICK_COLUMNS,
@@ -10,7 +10,7 @@ import {
   EXPLOSION_RADIUS,
   HARD_BRICK_DURABILITY,
 } from "../config/brickConfig.ts";
-import { GAME_WIDTH } from "../config/gameConfig.ts";
+import { PLAYFIELD_GAME_WIDTH } from "../config/playfieldConfig.ts";
 import { Brick, type BrickType } from "../entities/Brick.ts";
 import {
   createCenteredBrickLayout,
@@ -39,7 +39,7 @@ export class BrickSystem {
     const layout =
       stage === 1
         ? createCenteredBrickLayout(
-            GAME_WIDTH,
+            PLAYFIELD_GAME_WIDTH,
             BRICK_START_Y,
             BRICK_COLUMNS,
             BRICK_ROWS,

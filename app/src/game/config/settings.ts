@@ -1,4 +1,4 @@
-import type { InputSensitivityPreset } from "./inputConfig";
+import type { InputSensitivityPreset } from "./inputConfig.ts";
 
 export interface RuntimeSettings {
   sensitivity: InputSensitivityPreset;

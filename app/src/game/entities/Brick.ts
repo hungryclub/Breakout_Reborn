@@ -1,8 +1,11 @@
 import Phaser from "phaser";
 
-import { BRICK_TEXTURE_KEYS } from "../config/assetKeys";
+import { BRICK_TEXTURE_KEYS } from "../config/assetKeys.ts";
 import {
   BRICK_HEIGHT,
+  BRICK_HITBOX_HEIGHT,
+  BRICK_HITBOX_OFFSET_Y,
+  BRICK_HITBOX_WIDTH,
   BRICK_WIDTH,
 } from "../config/brickConfig.ts";
 
@@ -40,7 +43,11 @@ export class Brick extends Phaser.GameObjects.Image {
     scene.physics.add.existing(this, true);
 
     const body = this.body as Phaser.Physics.Arcade.StaticBody;
-    body.setSize(BRICK_WIDTH, BRICK_HEIGHT);
+    body.setSize(BRICK_HITBOX_WIDTH, BRICK_HITBOX_HEIGHT);
+    body.setOffset(
+      (BRICK_WIDTH - BRICK_HITBOX_WIDTH) / 2,
+      (BRICK_HEIGHT - BRICK_HITBOX_HEIGHT) / 2 + BRICK_HITBOX_OFFSET_Y,
+    );
     body.updateFromGameObject();
   }
 
