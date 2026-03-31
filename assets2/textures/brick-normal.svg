@@ -1,0 +1,43 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" width="384" height="128" viewBox="0 0 384 128">
+  <defs>
+    <linearGradient id="blockFill" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FFD4B3"/>
+      <stop offset="42%" stop-color="#F7B787"/>
+      <stop offset="100%" stop-color="#E99260"/>
+    </linearGradient>
+
+    <linearGradient id="innerLine" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FFE8D4" stop-opacity="0.95"/>
+      <stop offset="100%" stop-color="#FFD2AF" stop-opacity="0.55"/>
+    </linearGradient>
+
+    <linearGradient id="topGloss" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FFF1E4" stop-opacity="0.95"/>
+      <stop offset="100%" stop-color="#FFDABD" stop-opacity="0.18"/>
+    </linearGradient>
+
+    <linearGradient id="midStripe" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#FFC79F" stop-opacity="0"/>
+      <stop offset="18%" stop-color="#FFD9BC" stop-opacity="0.45"/>
+      <stop offset="50%" stop-color="#FFEADB" stop-opacity="0.8"/>
+      <stop offset="82%" stop-color="#FFD9BC" stop-opacity="0.45"/>
+      <stop offset="100%" stop-color="#FFC79F" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+
+  <!-- base -->
+  <rect x="0" y="0" width="384" height="128" rx="30" fill="url(#blockFill)"/>
+
+  <!-- inner outline -->
+  <rect x="3" y="3" width="378" height="122" rx="27" fill="none" stroke="#BF6038" stroke-width="2.5"/>
+  <rect x="8" y="8" width="368" height="112" rx="24" fill="none" stroke="url(#innerLine)" stroke-width="2"/>
+
+  <!-- top gloss -->
+  <rect x="28" y="18" width="328" height="30" rx="15" fill="url(#topGloss)"/>
+
+  <!-- center soft band -->
+  <rect x="42" y="68" width="300" height="12" rx="6" fill="url(#midStripe)"/>
+
+  <!-- subtle lower shading -->
+  <ellipse cx="192" cy="96" rx="142" ry="18" fill="#D97D4B" opacity="0.10"/>
+</svg>
